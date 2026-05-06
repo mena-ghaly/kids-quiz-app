@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Science Quiz - Grade 3</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 30px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #48dbfb, #54a0ff);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .score-display span {
+            color: #54a0ff;
+            font-size: 1.3rem;
+        }
+
+        .timer-display {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 600;
+            background: #f0f0f0;
+            padding: 6px 14px;
+            border-radius: 20px;
+        }
+
+        .timer-display span {
+            color: #ee5a24;
+            font-size: 1.2rem;
+        }
+
+        .question-number {
+            text-align: center;
+            font-size: 0.95rem;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            font-weight: 600;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 14px;
+        }
+
+        .option-btn {
+            padding: 18px 24px;
+            border: 3px solid #e8e8e8;
+            border-radius: 16px;
+            background: #fafafa;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            color: #444;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn:hover {
+            border-color: #54a0ff;
+            background: #f0f7ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(84, 160, 255, 0.2);
+        }
+
+        .option-btn:active {
+            transform: translateY(0);
+        }
+
+        .option-btn.correct {
+            border-color: #00b894;
+            background: #d4f5e9;
+            color: #00b894;
+            animation: pulse-correct 0.5s ease;
+        }
+
+        .option-btn.wrong {
+            border-color: #ff6b6b;
+            background: #ffe0e0;
+            color: #ff6b6b;
+            animation: shake 0.5s ease;
+        }
+
+        .option-btn.disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .option-btn.show-correct {
+            border-color: #00b894;
+            background: #d4f5e9;
+            color: #00b894;
+        }
+
+        @keyframes pulse-correct {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100%) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .next-btn {
+            display: none;
+            margin: 25px auto 0;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #54a0ff, #5f27cd);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(84, 160, 255, 0.4);
+        }
+
+        .next-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(84, 160, 255, 0.5);
+        }
+
+        .next-btn.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Start Screen */
+        .start-screen {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .start-screen h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .start-screen .emoji {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .start-screen p {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .start-btn {
+            padding: 18px 50px;
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 184, 148, 0.4);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(0, 184, 148, 0.5);
+        }
+
+        /* End Screen */
+        .end-screen {
+            text-align: center;
+            padding: 30px 0;
+            display: none;
+        }
+
+        .end-screen .emoji {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            animation: bounce 1s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .end-screen h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .end-screen .final-score {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #54a0ff, #5f27cd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .end-screen .message {
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .restart-btn {
+            padding: 16px 45px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        .quiz-screen {
+            display: none;
+        }
+
+        .feedback {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 15px;
+            min-height: 40px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feedback.show {
+            opacity: 1;
+        }
+
+        .feedback.correct {
+            color: #00b894;
+        }
+
+        .feedback.wrong {
+            color: #ff6b6b;
+        }
+
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            animation: confetti-fall 3s linear forwards;
+        }
+
+        /* Stars animation */
+        .stars {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .stars.show {
+            opacity: 1;
+            animation: starsAppear 0.5s ease;
+        }
+
+        @keyframes starsAppear {
+            from { transform: translate(-50%, -50%) scale(0); }
+            to { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px 18px;
+                border-radius: 18px;
+            }
+
+            .question-text {
+                font-size: 1.1rem;
+            }
+
+            .option-btn {
+                padding: 14px 18px;
+                font-size: 1rem;
+            }
+
+            .start-screen h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Start Screen -->
+        <div class="start-screen" id="startScreen">
+            <div class="emoji">🖥️🎮</div>
+            <h1>Computer Science Quiz</h1>
+            <p>Grade 3 - Chapter 1: Computer and Its Components</p>
+            <p>Answer 32 fun questions and test your knowledge!</p>
+            <button class="start-btn" onclick="startQuiz()">Let's Go! 🚀</button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div class="quiz-screen" id="quizScreen">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="quiz-header">
+                <div class="score-display">Score: <span id="scoreText">0</span></div>
+                <div class="timer-display">⏱️ <span id="timerText">00:00</span></div>
+            </div>
+            <div class="question-number" id="questionNumber"></div>
+            <div class="question-text" id="questionText"></div>
+            <div class="options-grid" id="optionsGrid"></div>
+            <div class="feedback" id="feedback"></div>
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next ➡️</button>
+        </div>
+
+        <!-- End Screen -->
+        <div class="end-screen" id="endScreen">
+            <div class="emoji" id="endEmoji">🏆</div>
+            <h2 id="endTitle">Quiz Complete!</h2>
+            <div class="final-score" id="finalScore"></div>
+            <div class="message" id="timeResult" style="font-size:1.1rem; color:#ee5a24; margin-bottom:10px;"></div>
+            <div class="message" id="endMessage"></div>
+            <button class="restart-btn" onclick="restartQuiz()">Play Again 🔄</button>
+        </div>
+    </div>
+
+    <script>
+        // ===== ALL QUESTIONS (converted to MCQ format) =====
+        const allQuestions = [
+            // --- Section I: Circle the correct answers ---
+            {
+                question: "__________ means to calculate or count.",
+                options: ["Compute", "System", "Computer system", "Program"],
+                correct: 0
+            },
+            {
+                question: "After processing, the computer shows the final result as a __________.",
+                options: ["Input", "Storage", "Output", "Memory"],
+                correct: 2
+            },
+            {
+                question: "__________ is a physical component attached to a computer.",
+                options: ["Software", "Hardware", "Malware", "Firmware"],
+                correct: 1
+            },
+            {
+                question: "Software is mainly of __________ types.",
+                options: ["Four", "Three", "Two", "Five"],
+                correct: 2
+            },
+            {
+                question: "__________ software helps in doing specific work.",
+                options: ["System", "Application", "Operating system", "Utility"],
+                correct: 1
+            },
+            {
+                question: "A computer is a combination of which two things?",
+                options: ["Input and output devices", "Hardware and software", "CPU and monitor", "Keyboard and mouse"],
+                correct: 1
+            },
+            {
+                question: "Which of the following is an example of an Input Device?",
+                options: ["Monitor", "Printer", "Keyboard", "Speaker"],
+                correct: 2
+            },
+            {
+                question: "What is the basic working principle of a computer?",
+                options: ["Store → Process → Output", "Input → Process → Output", "Input → Store → Display", "Output → Process → Input"],
+                correct: 1
+            },
+            {
+                question: "Which component of a computer system is the 'Processing Unit'?",
+                options: ["Monitor", "CPU", "Keyboard", "Hard Disk"],
+                correct: 1
+            },
+            {
+                question: "An electronic device that receives data, processes it, and shows a result is called a:",
+                options: ["Calculator only", "Printer", "Computer", "Television"],
+                correct: 2
+            },
+
+            // --- Section II: Fill in the blanks (converted to MCQ) ---
+            {
+                question: "__________ means a computer is used in different places for different purposes.",
+                options: ["Versatility", "Speed", "Accuracy", "Storage"],
+                correct: 0
+            },
+            {
+                question: "A computer can perform thousands of calculations in a __________.",
+                options: ["Minute", "Second", "Hour", "Day"],
+                correct: 1
+            },
+            {
+                question: "The characteristic that allows a computer to work very fast is called __________.",
+                options: ["Accuracy", "Storage", "Speed", "Versatility"],
+                correct: 2
+            },
+            {
+                question: "The computer has a very large __________ capacity.",
+                options: ["Speed", "Storage", "Processing", "Display"],
+                correct: 1
+            },
+            {
+                question: "A computer can store a large amount of work for a long __________.",
+                options: ["Second", "Minute", "Time", "Hour"],
+                correct: 2
+            },
+            {
+                question: "A computer can perform a variety of tasks __________.",
+                options: ["Slowly", "Efficiently", "Roughly", "Loudly"],
+                correct: 1
+            },
+            {
+                question: "A computer works with high __________.",
+                options: ["Volume", "Speed only", "Accuracy", "Temperature"],
+                correct: 2
+            },
+            {
+                question: "A computer cannot make mistakes on its __________.",
+                options: ["Screen", "Own", "Keyboard", "Software"],
+                correct: 1
+            },
+            {
+                question: "A computer can work for many hours without getting tired. This characteristic is called __________.",
+                options: ["Diligence", "Speed", "Accuracy", "Versatility"],
+                correct: 0
+            },
+            {
+                question: "The working of a computer can be shown in the form of a __________ diagram, also known as the IPO cycle.",
+                options: ["Circle", "Block", "Line", "Flow"],
+                correct: 1
+            },
+            {
+                question: "After processing, a computer shows the final result or information as an __________.",
+                options: ["Input", "Output", "Storage", "Command"],
+                correct: 1
+            },
+            {
+                question: "Monitor, printer, and speakers are examples of __________ devices.",
+                options: ["Input", "Output", "Storage", "Processing"],
+                correct: 1
+            },
+            {
+                question: "A hardware component used to store data for future use is called a __________ device.",
+                options: ["Input", "Output", "Storage", "Processing"],
+                correct: 2
+            },
+            {
+                question: "__________ is a set of instructions that tells the computer hardware what to do.",
+                options: ["Hardware", "Software", "Monitor", "Keyboard"],
+                correct: 1
+            },
+            {
+                question: "Microsoft __________ helps us to perform calculations.",
+                options: ["Word", "Excel", "Paint", "PowerPoint"],
+                correct: 1
+            },
+            {
+                question: "__________ Operating System Software is available free of cost.",
+                options: ["Windows", "Linux", "MacOS", "Android"],
+                correct: 1
+            },
+
+            // --- Section III: Match the following (converted to MCQ) ---
+            {
+                question: "What is a 'Computer System'?",
+                options: [
+                    "A plastic or metal case with main components",
+                    "Used to enter data into a computer",
+                    "Combination of hardware and software",
+                    "A set of instructions for the computer"
+                ],
+                correct: 2
+            },
+            {
+                question: "What is a 'System Unit'?",
+                options: [
+                    "A plastic or metal case that contains the main components of a computer",
+                    "Used to enter data and instructions into a computer",
+                    "A set of instructions that tells the computer what to do",
+                    "Also known as Processor or Microprocessor"
+                ],
+                correct: 0
+            },
+            {
+                question: "What is an 'Input Device' used for?",
+                options: [
+                    "To display output on screen",
+                    "To enter data and instructions into a computer",
+                    "To store data permanently",
+                    "To process information"
+                ],
+                correct: 1
+            },
+            {
+                question: "What is 'Software'?",
+                options: [
+                    "A physical part of the computer",
+                    "A plastic or metal case",
+                    "A set of instructions that tells the computer what to do",
+                    "The brain of the computer"
+                ],
+                correct: 2
+            },
+            {
+                question: "What is the CPU also known as?",
+                options: [
+                    "Storage Device",
+                    "Input Device",
+                    "System Unit",
+                    "Processor or Microprocessor; the brain of the computer"
+                ],
+                correct: 3
+            },
+            {
+                question: "What do 'Storage Devices' do?",
+                options: [
+                    "Display output on screen",
+                    "Enter data into a computer",
+                    "Keep and store data and programs permanently",
+                    "Process all the instructions"
+                ],
+                correct: 2
+            }
+        ];
+
+        // ===== QUIZ STATE =====
+        let TOTAL_QUESTIONS = 0;
+        let currentQuestions = [];
+        let currentIndex = 0;
+        let score = 0;
+        let answered = false;
+        let timerInterval = null;
+        let startTime = 0;
+
+        // ===== AUDIO (embedded as base64 oscillator-generated sounds) =====
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new AudioContext();
+            }
+            return audioCtx;
+        }
+
+        function playCorrectSound() {
+            const ctx = getAudioContext();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+            osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1); // E5
+            osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.2); // G5
+
+            gain.gain.setValueAtTime(0.3, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.4);
+        }
+
+        function playWrongSound() {
+            const ctx = getAudioContext();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(200, ctx.currentTime);
+            osc.frequency.setValueAtTime(150, ctx.currentTime + 0.15);
+
+            gain.gain.setValueAtTime(0.2, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.3);
+        }
+
+        function playWinSound() {
+            const ctx = getAudioContext();
+            const notes = [523.25, 659.25, 783.99, 1046.5];
+            notes.forEach((freq, i) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.15);
+                gain.gain.setValueAtTime(0.3, ctx.currentTime + i * 0.15);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.15 + 0.3);
+                osc.start(ctx.currentTime + i * 0.15);
+                osc.stop(ctx.currentTime + i * 0.15 + 0.3);
+            });
+        }
+
+        // ===== UTILITY FUNCTIONS =====
+        function shuffle(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function selectAllQuestions() {
+            return shuffle(allQuestions);
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+        }
+
+        function startTimer() {
+            startTime = Date.now();
+            timerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                document.getElementById('timerText').textContent = formatTime(elapsed);
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function getElapsedTime() {
+            return Math.floor((Date.now() - startTime) / 1000);
+        }
+
+        // ===== QUIZ FUNCTIONS =====
+        function startQuiz() {
+            currentQuestions = selectAllQuestions();
+            TOTAL_QUESTIONS = currentQuestions.length;
+            currentIndex = 0;
+            score = 0;
+            answered = false;
+
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('endScreen').style.display = 'none';
+            document.getElementById('quizScreen').style.display = 'block';
+
+            startTimer();
+            showQuestion();
+        }
+
+        function showQuestion() {
+            answered = false;
+            const q = currentQuestions[currentIndex];
+
+            // Shuffle options while tracking correct answer
+            const correctAnswer = q.options[q.correct];
+            const shuffledOptions = shuffle(q.options);
+            const newCorrectIndex = shuffledOptions.indexOf(correctAnswer);
+
+            // Store shuffled state
+            currentQuestions[currentIndex]._shuffledOptions = shuffledOptions;
+            currentQuestions[currentIndex]._shuffledCorrect = newCorrectIndex;
+
+            // Update UI
+            document.getElementById('progressFill').style.width = ((currentIndex / TOTAL_QUESTIONS) * 100) + '%';
+            document.getElementById('scoreText').textContent = score;
+            document.getElementById('questionNumber').textContent = `Question ${currentIndex + 1} of ${TOTAL_QUESTIONS}`;
+            document.getElementById('questionText').textContent = q.question;
+
+            const grid = document.getElementById('optionsGrid');
+            grid.innerHTML = '';
+
+            shuffledOptions.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = option;
+                btn.onclick = () => selectAnswer(index, newCorrectIndex, btn);
+                grid.appendChild(btn);
+            });
+
+            document.getElementById('nextBtn').classList.remove('show');
+            const feedback = document.getElementById('feedback');
+            feedback.classList.remove('show', 'correct', 'wrong');
+            feedback.textContent = '';
+        }
+
+        function selectAnswer(selected, correct, btn) {
+            if (answered) return;
+            answered = true;
+
+            const buttons = document.querySelectorAll('.option-btn');
+            const feedback = document.getElementById('feedback');
+
+            buttons.forEach(b => b.classList.add('disabled'));
+
+            if (selected === correct) {
+                score++;
+                btn.classList.add('correct');
+                document.getElementById('scoreText').textContent = score;
+                feedback.textContent = '✅ Correct! Great job!';
+                feedback.classList.add('show', 'correct');
+                playCorrectSound();
+            } else {
+                btn.classList.add('wrong');
+                buttons[correct].classList.add('show-correct');
+                feedback.textContent = '❌ Oops! The correct answer is highlighted.';
+                feedback.classList.add('show', 'wrong');
+                playWrongSound();
+            }
+
+            document.getElementById('nextBtn').classList.add('show');
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+            if (currentIndex >= TOTAL_QUESTIONS) {
+                showEndScreen();
+            } else {
+                showQuestion();
+            }
+        }
+
+        function showEndScreen() {
+            stopTimer();
+            const elapsed = getElapsedTime();
+            document.getElementById('quizScreen').style.display = 'none';
+            document.getElementById('endScreen').style.display = 'block';
+
+            const percent = Math.round((score / TOTAL_QUESTIONS) * 100);
+            document.getElementById('finalScore').textContent = `${score} / ${TOTAL_QUESTIONS} (${percent}%)`;
+            document.getElementById('timeResult').textContent = `⏱️ Time: ${formatTime(elapsed)}`;
+
+            let emoji, title, message;
+            if (percent >= 90) {
+                emoji = '🏆🌟';
+                title = 'Amazing!';
+                message = "You're a Computer Science superstar! Incredible work!";
+                createConfetti();
+            } else if (percent >= 70) {
+                emoji = '🎉😊';
+                title = 'Great Job!';
+                message = "You know your computers well! Keep it up!";
+                createConfetti();
+            } else if (percent >= 50) {
+                emoji = '👍💪';
+                title = 'Good Effort!';
+                message = "Nice try! Practice a bit more and you'll be a pro!";
+            } else {
+                emoji = '📚🤓';
+                title = 'Keep Learning!';
+                message = "Don't worry! Read the chapter again and try once more!";
+            }
+
+            document.getElementById('endEmoji').textContent = emoji;
+            document.getElementById('endTitle').textContent = title;
+            document.getElementById('endMessage').textContent = message;
+
+            playWinSound();
+        }
+
+        function restartQuiz() {
+            document.getElementById('endScreen').style.display = 'none';
+            startQuiz();
+        }
+
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#54a0ff', '#00b894', '#fd79a8'];
+            const container = document.createElement('div');
+            container.className = 'confetti';
+            document.body.appendChild(container);
+
+            for (let i = 0; i < 50; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.animationDelay = Math.random() * 2 + 's';
+                piece.style.animationDuration = (2 + Math.random() * 2) + 's';
+                container.appendChild(piece);
+            }
+
+            setTimeout(() => container.remove(), 5000);
+        }
+    </script>
+</body>
+</html>
