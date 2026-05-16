@@ -1,903 +1,1290 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Science Quiz - Grade 3</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🇫🇷 Quiz Français – Classe 3</title>
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
+    :root {
+      --blue:   #1a73e8;
+      --green:  #2ecc40;
+      --red:    #ff4136;
+      --yellow: #ffdc00;
+      --orange: #ff851b;
+      --purple: #b10dc9;
+      --pink:   #f012be;
+      --bg:     #f0f4ff;
+      --white:  #ffffff;
+      --text:   #222;
+      --radius: 18px;
+    }
 
-        .container {
-            background: white;
-            border-radius: 24px;
-            padding: 40px 30px;
-            max-width: 700px;
-            width: 100%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            position: relative;
-            overflow: hidden;
-        }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
 
-        .container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff);
-        }
+    /* ===== CONTAINER ===== */
+    .app {
+      background: var(--white);
+      border-radius: 28px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.3);
+      width: 100%;
+      max-width: 680px;
+      overflow: hidden;
+    }
 
-        .progress-bar {
-            width: 100%;
-            height: 12px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
+    /* ===== HEADER ===== */
+    .header {
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      color: white;
+      padding: 18px 24px 14px;
+      text-align: center;
+    }
+    .header h1 { font-size: clamp(1.3rem, 5vw, 1.8rem); letter-spacing: 1px; }
+    .header p  { font-size: 0.9rem; opacity: .85; margin-top: 4px; }
 
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #48dbfb, #54a0ff);
-            border-radius: 10px;
-            transition: width 0.5s ease;
-        }
+    /* ===== PROGRESS BAR ===== */
+    .progress-wrap {
+      padding: 14px 24px 0;
+      background: #f7f9ff;
+    }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #555;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .progress-bar-bg {
+      height: 12px;
+      background: #e0e6ff;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      border-radius: 99px;
+      transition: width .5s ease;
+    }
 
-        .quiz-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
+    /* ===== TIMER ===== */
+    .timer-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 24px 6px;
+      background: #f7f9ff;
+    }
+    .timer-circle {
+      position: relative;
+      width: 56px;
+      height: 56px;
+    }
+    .timer-circle svg {
+      position: absolute;
+      top: 0; left: 0;
+      transform: rotate(-90deg);
+    }
+    .timer-circle .timer-num {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #764ba2;
+    }
+    .timer-urgent { color: var(--red) !important; animation: pulse 0.5s infinite alternate; }
+    @keyframes pulse { from { transform: translate(-50%,-50%) scale(1); } to { transform: translate(-50%,-50%) scale(1.15); } }
 
-        .score-display {
-            text-align: center;
-            font-size: 1.1rem;
-            color: #666;
-            font-weight: 600;
-        }
+    /* ===== MAIN AREA ===== */
+    .main {
+      padding: 20px 24px 28px;
+      background: #f7f9ff;
+    }
 
-        .score-display span {
-            color: #54a0ff;
-            font-size: 1.3rem;
-        }
+    /* ===== CATEGORY BADGE ===== */
+    .category-badge {
+      display: inline-block;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 10px;
+    }
 
-        .timer-display {
-            font-size: 1.1rem;
-            color: #666;
-            font-weight: 600;
-            background: #f0f0f0;
-            padding: 6px 14px;
-            border-radius: 20px;
-        }
+    /* ===== QUESTION ===== */
+    .question-box {
+      background: white;
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 16px rgba(102,126,234,.12);
+      min-height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .question-text {
+      font-size: clamp(1.05rem, 3.5vw, 1.25rem);
+      font-weight: 700;
+      color: var(--text);
+      text-align: center;
+      line-height: 1.45;
+    }
 
-        .timer-display span {
-            color: #ee5a24;
-            font-size: 1.2rem;
-        }
+    /* ===== OPTIONS GRID ===== */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 420px) { .options-grid { grid-template-columns: 1fr; } }
 
-        .question-number {
-            text-align: center;
-            font-size: 0.95rem;
-            color: #999;
-            margin-bottom: 10px;
-        }
+    .option-btn {
+      background: white;
+      border: 3px solid #dde3ff;
+      border-radius: var(--radius);
+      padding: 16px 14px;
+      font-size: clamp(0.95rem, 3vw, 1.08rem);
+      font-weight: 700;
+      color: #333;
+      cursor: pointer;
+      text-align: center;
+      transition: transform .12s, border-color .15s, background .15s, box-shadow .15s;
+      line-height: 1.3;
+      box-shadow: 0 3px 10px rgba(0,0,0,.07);
+      position: relative;
+      overflow: hidden;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: #667eea;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(102,126,234,.22);
+    }
+    .option-btn:active:not(:disabled) { transform: translateY(0); }
+    .option-btn:disabled { cursor: not-allowed; }
 
-        .question-text {
-            font-size: 1.3rem;
-            color: #333;
-            text-align: center;
-            margin-bottom: 30px;
-            line-height: 1.6;
-            font-weight: 600;
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    /* label letters A B C D */
+    .option-btn::before {
+      content: attr(data-label);
+      display: inline-block;
+      background: #e8ecff;
+      color: #667eea;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      line-height: 26px;
+      text-align: center;
+      font-size: 0.8rem;
+      margin-right: 8px;
+      font-weight: 800;
+      flex-shrink: 0;
+      transition: background .15s, color .15s;
+    }
+    .option-btn { display: flex; align-items: center; }
 
-        .options-grid {
-            display: grid;
-            gap: 14px;
-        }
+    /* correct / wrong states */
+    .option-btn.correct {
+      background: #e6ffed;
+      border-color: var(--green);
+      color: #1a7a30;
+    }
+    .option-btn.correct::before { background: var(--green); color: white; }
 
-        .option-btn {
-            padding: 18px 24px;
-            border: 3px solid #e8e8e8;
-            border-radius: 16px;
-            background: #fafafa;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: left;
-            color: #444;
-            font-weight: 500;
-            position: relative;
-            overflow: hidden;
-        }
+    .option-btn.wrong {
+      background: #fff0f0;
+      border-color: var(--red);
+      color: #8b0000;
+      animation: shake 0.4s ease;
+    }
+    .option-btn.wrong::before { background: var(--red); color: white; }
 
-        .option-btn:hover {
-            border-color: #54a0ff;
-            background: #f0f7ff;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(84, 160, 255, 0.2);
-        }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-8px); }
+      40%      { transform: translateX(8px); }
+      60%      { transform: translateX(-6px); }
+      80%      { transform: translateX(6px); }
+    }
 
-        .option-btn:active {
-            transform: translateY(0);
-        }
+    /* ===== FEEDBACK BANNER ===== */
+    .feedback {
+      border-radius: var(--radius);
+      padding: 12px 18px;
+      margin-top: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-align: center;
+      display: none;
+      animation: fadeIn .2s ease;
+    }
+    .feedback.show { display: block; }
+    .feedback.correct-fb { background: #e6ffed; color: #1a7a30; border: 2px solid #2ecc40; }
+    .feedback.wrong-fb   { background: #fff0f0; color: #8b0000; border: 2px solid #ff4136; }
+    @keyframes fadeIn { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform:none; } }
 
-        .option-btn.correct {
-            border-color: #00b894;
-            background: #d4f5e9;
-            color: #00b894;
-            animation: pulse-correct 0.5s ease;
-        }
+    /* ===== NEXT BUTTON ===== */
+    .next-btn {
+      display: none;
+      margin: 16px auto 0;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      border-radius: 99px;
+      padding: 14px 42px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      letter-spacing: .5px;
+      box-shadow: 0 6px 20px rgba(102,126,234,.35);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .next-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(102,126,234,.45); }
+    .next-btn.visible { display: block; }
 
-        .option-btn.wrong {
-            border-color: #ff6b6b;
-            background: #ffe0e0;
-            color: #ff6b6b;
-            animation: shake 0.5s ease;
-        }
+    /* ===== SCORE PILL ===== */
+    .score-pill {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      padding: 10px 24px 0;
+      background: #f7f9ff;
+    }
+    .pill {
+      background: white;
+      border-radius: 99px;
+      padding: 6px 18px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pill.correct-pill { color: #1a7a30; }
+    .pill.wrong-pill   { color: #8b0000; }
 
-        .option-btn.disabled {
-            pointer-events: none;
-            opacity: 0.7;
-        }
+    /* ===== START SCREEN ===== */
+    #start-screen {
+      padding: 40px 24px;
+      text-align: center;
+      background: #f7f9ff;
+    }
+    #start-screen .big-emoji { font-size: 5rem; margin-bottom: 10px; }
+    #start-screen h2 { font-size: 1.6rem; color: #764ba2; margin-bottom: 8px; }
+    #start-screen p  { color: #555; font-size: 1rem; margin-bottom: 24px; line-height: 1.5; }
+    .start-btn {
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      border-radius: 99px;
+      padding: 16px 52px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(102,126,234,.4);
+      transition: transform .15s;
+    }
+    .start-btn:hover { transform: scale(1.04); }
 
-        .option-btn.show-correct {
-            border-color: #00b894;
-            background: #d4f5e9;
-            color: #00b894;
-        }
+    /* ===== END SCREEN ===== */
+    #end-screen {
+      display: none;
+      padding: 36px 24px 40px;
+      text-align: center;
+      background: #f7f9ff;
+    }
+    .stars { font-size: 3rem; letter-spacing: 6px; margin: 12px 0; }
+    #end-screen h2 { font-size: 1.7rem; color: #764ba2; margin-bottom: 6px; }
+    .final-score-num { font-size: 3.5rem; font-weight: 900; color: #667eea; margin: 8px 0; }
+    #end-screen p { color: #555; font-size: 1rem; margin-bottom: 20px; }
+    .restart-btn {
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      border-radius: 99px;
+      padding: 14px 44px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(102,126,234,.35);
+      transition: transform .15s;
+    }
+    .restart-btn:hover { transform: scale(1.04); }
 
-        @keyframes pulse-correct {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-        }
+    /* ===== QUIZ AREA (hidden until started) ===== */
+    #quiz-area { display: none; }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-8px); }
-            40% { transform: translateX(8px); }
-            60% { transform: translateX(-5px); }
-            80% { transform: translateX(5px); }
-        }
-
-        @keyframes confetti-fall {
-            0% { transform: translateY(-100%) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-        }
-
-        .next-btn {
-            display: none;
-            margin: 25px auto 0;
-            padding: 15px 40px;
-            background: linear-gradient(135deg, #54a0ff, #5f27cd);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(84, 160, 255, 0.4);
-        }
-
-        .next-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(84, 160, 255, 0.5);
-        }
-
-        .next-btn.show {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Start Screen */
-        .start-screen {
-            text-align: center;
-            padding: 30px 0;
-        }
-
-        .start-screen h1 {
-            font-size: 2rem;
-            color: #333;
-            margin-bottom: 15px;
-        }
-
-        .start-screen .emoji {
-            font-size: 4rem;
-            margin-bottom: 20px;
-        }
-
-        .start-screen p {
-            color: #666;
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-        }
-
-        .start-btn {
-            padding: 18px 50px;
-            background: linear-gradient(135deg, #00b894, #00cec9);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.4rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(0, 184, 148, 0.4);
-        }
-
-        .start-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 30px rgba(0, 184, 148, 0.5);
-        }
-
-        /* End Screen */
-        .end-screen {
-            text-align: center;
-            padding: 30px 0;
-            display: none;
-        }
-
-        .end-screen .emoji {
-            font-size: 5rem;
-            margin-bottom: 20px;
-            animation: bounce 1s ease infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        .end-screen h2 {
-            font-size: 2rem;
-            color: #333;
-            margin-bottom: 15px;
-        }
-
-        .end-screen .final-score {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #54a0ff, #5f27cd);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 15px;
-        }
-
-        .end-screen .message {
-            font-size: 1.3rem;
-            color: #666;
-            margin-bottom: 30px;
-        }
-
-        .restart-btn {
-            padding: 16px 45px;
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
-        }
-
-        .restart-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-        }
-
-        .quiz-screen {
-            display: none;
-        }
-
-        .feedback {
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-top: 15px;
-            min-height: 40px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .feedback.show {
-            opacity: 1;
-        }
-
-        .feedback.correct {
-            color: #00b894;
-        }
-
-        .feedback.wrong {
-            color: #ff6b6b;
-        }
-
-        .confetti {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1000;
-        }
-
-        .confetti-piece {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            border-radius: 3px;
-            animation: confetti-fall 3s linear forwards;
-        }
-
-        /* Stars animation */
-        .stars {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            opacity: 0;
-        }
-
-        .stars.show {
-            opacity: 1;
-            animation: starsAppear 0.5s ease;
-        }
-
-        @keyframes starsAppear {
-            from { transform: translate(-50%, -50%) scale(0); }
-            to { transform: translate(-50%, -50%) scale(1); }
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 25px 18px;
-                border-radius: 18px;
-            }
-
-            .question-text {
-                font-size: 1.1rem;
-            }
-
-            .option-btn {
-                padding: 14px 18px;
-                font-size: 1rem;
-            }
-
-            .start-screen h1 {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
+    /* ===== CONFETTI canvas ===== */
+    #confetti-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Start Screen -->
-        <div class="start-screen" id="startScreen">
-            <div class="emoji">🖥️🎮</div>
-            <h1>Computer Science Quiz</h1>
-            <p>Grade 3 - Chapter 1: Computer and Its Components</p>
-            <p>Answer 32 fun questions and test your knowledge!</p>
-            <button class="start-btn" onclick="startQuiz()">Let's Go! 🚀</button>
-        </div>
 
-        <!-- Quiz Screen -->
-        <div class="quiz-screen" id="quizScreen">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <div class="quiz-header">
-                <div class="score-display">Score: <span id="scoreText">0</span></div>
-                <div class="timer-display">⏱️ <span id="timerText">00:00</span></div>
-            </div>
-            <div class="question-number" id="questionNumber"></div>
-            <div class="question-text" id="questionText"></div>
-            <div class="options-grid" id="optionsGrid"></div>
-            <div class="feedback" id="feedback"></div>
-            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next ➡️</button>
-        </div>
+<canvas id="confetti-canvas"></canvas>
 
-        <!-- End Screen -->
-        <div class="end-screen" id="endScreen">
-            <div class="emoji" id="endEmoji">🏆</div>
-            <h2 id="endTitle">Quiz Complete!</h2>
-            <div class="final-score" id="finalScore"></div>
-            <div class="message" id="timeResult" style="font-size:1.1rem; color:#ee5a24; margin-bottom:10px;"></div>
-            <div class="message" id="endMessage"></div>
-            <button class="restart-btn" onclick="restartQuiz()">Play Again 🔄</button>
-        </div>
+<div class="app">
+  <!-- HEADER -->
+  <div class="header">
+    <h1>🇫🇷 Quiz Français – Classe 3</h1>
+    <p>Révisions amusantes pour les enfants !</p>
+  </div>
+
+  <!-- START SCREEN -->
+  <div id="start-screen">
+    <div class="big-emoji">🎓</div>
+    <h2>Prêt(e) à jouer ?</h2>
+    <p>Tu vas répondre à <strong id="total-q-count"></strong> questions sur le français.<br>Tu as <strong>15 secondes</strong> par question. Bonne chance ! 🍀</p>
+    <button class="start-btn" onclick="startQuiz()">▶ Commencer le Quiz !</button>
+  </div>
+
+  <!-- QUIZ AREA -->
+  <div id="quiz-area">
+    <!-- Score pills -->
+    <div class="score-pill">
+      <div class="pill correct-pill">✅ <span id="score-correct">0</span> correctes</div>
+      <div class="pill wrong-pill">❌ <span id="score-wrong">0</span> fausses</div>
     </div>
 
-    <script>
-        // ===== ALL QUESTIONS (converted to MCQ format) =====
-        const allQuestions = [
-            // --- Section I: Circle the correct answers ---
-            {
-                question: "__________ means to calculate or count.",
-                options: ["Compute", "System", "Computer system", "Program"],
-                correct: 0
-            },
-            {
-                question: "After processing, the computer shows the final result as a __________.",
-                options: ["Input", "Storage", "Output", "Memory"],
-                correct: 2
-            },
-            {
-                question: "__________ is a physical component attached to a computer.",
-                options: ["Software", "Hardware", "Malware", "Firmware"],
-                correct: 1
-            },
-            {
-                question: "Software is mainly of __________ types.",
-                options: ["Four", "Three", "Two", "Five"],
-                correct: 2
-            },
-            {
-                question: "__________ software helps in doing specific work.",
-                options: ["System", "Application", "Operating system", "Utility"],
-                correct: 1
-            },
-            {
-                question: "A computer is a combination of which two things?",
-                options: ["Input and output devices", "Hardware and software", "CPU and monitor", "Keyboard and mouse"],
-                correct: 1
-            },
-            {
-                question: "Which of the following is an example of an Input Device?",
-                options: ["Monitor", "Printer", "Keyboard", "Speaker"],
-                correct: 2
-            },
-            {
-                question: "What is the basic working principle of a computer?",
-                options: ["Store → Process → Output", "Input → Process → Output", "Input → Store → Display", "Output → Process → Input"],
-                correct: 1
-            },
-            {
-                question: "Which component of a computer system is the 'Processing Unit'?",
-                options: ["Monitor", "CPU", "Keyboard", "Hard Disk"],
-                correct: 1
-            },
-            {
-                question: "An electronic device that receives data, processes it, and shows a result is called a:",
-                options: ["Calculator only", "Printer", "Computer", "Television"],
-                correct: 2
-            },
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span>Question <span id="q-num">1</span> / <span id="q-total"></span></span>
+        <span id="q-category"></span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
 
-            // --- Section II: Fill in the blanks (converted to MCQ) ---
-            {
-                question: "__________ means a computer is used in different places for different purposes.",
-                options: ["Versatility", "Speed", "Accuracy", "Storage"],
-                correct: 0
-            },
-            {
-                question: "A computer can perform thousands of calculations in a __________.",
-                options: ["Minute", "Second", "Hour", "Day"],
-                correct: 1
-            },
-            {
-                question: "The characteristic that allows a computer to work very fast is called __________.",
-                options: ["Accuracy", "Storage", "Speed", "Versatility"],
-                correct: 2
-            },
-            {
-                question: "The computer has a very large __________ capacity.",
-                options: ["Speed", "Storage", "Processing", "Display"],
-                correct: 1
-            },
-            {
-                question: "A computer can store a large amount of work for a long __________.",
-                options: ["Second", "Minute", "Time", "Hour"],
-                correct: 2
-            },
-            {
-                question: "A computer can perform a variety of tasks __________.",
-                options: ["Slowly", "Efficiently", "Roughly", "Loudly"],
-                correct: 1
-            },
-            {
-                question: "A computer works with high __________.",
-                options: ["Volume", "Speed only", "Accuracy", "Temperature"],
-                correct: 2
-            },
-            {
-                question: "A computer cannot make mistakes on its __________.",
-                options: ["Screen", "Own", "Keyboard", "Software"],
-                correct: 1
-            },
-            {
-                question: "A computer can work for many hours without getting tired. This characteristic is called __________.",
-                options: ["Diligence", "Speed", "Accuracy", "Versatility"],
-                correct: 0
-            },
-            {
-                question: "The working of a computer can be shown in the form of a __________ diagram, also known as the IPO cycle.",
-                options: ["Circle", "Block", "Line", "Flow"],
-                correct: 1
-            },
-            {
-                question: "After processing, a computer shows the final result or information as an __________.",
-                options: ["Input", "Output", "Storage", "Command"],
-                correct: 1
-            },
-            {
-                question: "Monitor, printer, and speakers are examples of __________ devices.",
-                options: ["Input", "Output", "Storage", "Processing"],
-                correct: 1
-            },
-            {
-                question: "A hardware component used to store data for future use is called a __________ device.",
-                options: ["Input", "Output", "Storage", "Processing"],
-                correct: 2
-            },
-            {
-                question: "__________ is a set of instructions that tells the computer hardware what to do.",
-                options: ["Hardware", "Software", "Monitor", "Keyboard"],
-                correct: 1
-            },
-            {
-                question: "Microsoft __________ helps us to perform calculations.",
-                options: ["Word", "Excel", "Paint", "PowerPoint"],
-                correct: 1
-            },
-            {
-                question: "__________ Operating System Software is available free of cost.",
-                options: ["Windows", "Linux", "MacOS", "Android"],
-                correct: 1
-            },
+    <!-- Timer -->
+    <div class="timer-row">
+      <div class="timer-circle">
+        <svg width="56" height="56" viewBox="0 0 56 56">
+          <circle cx="28" cy="28" r="24" fill="none" stroke="#e0e6ff" stroke-width="5"/>
+          <circle id="timer-ring" cx="28" cy="28" r="24" fill="none" stroke="#764ba2" stroke-width="5"
+            stroke-dasharray="150.8" stroke-dashoffset="0" stroke-linecap="round"
+            style="transition: stroke-dashoffset .95s linear, stroke .5s;"/>
+        </svg>
+        <div class="timer-num" id="timer-num">15</div>
+      </div>
+    </div>
 
-            // --- Section III: Match the following (converted to MCQ) ---
-            {
-                question: "What is a 'Computer System'?",
-                options: [
-                    "A plastic or metal case with main components",
-                    "Used to enter data into a computer",
-                    "Combination of hardware and software",
-                    "A set of instructions for the computer"
-                ],
-                correct: 2
-            },
-            {
-                question: "What is a 'System Unit'?",
-                options: [
-                    "A plastic or metal case that contains the main components of a computer",
-                    "Used to enter data and instructions into a computer",
-                    "A set of instructions that tells the computer what to do",
-                    "Also known as Processor or Microprocessor"
-                ],
-                correct: 0
-            },
-            {
-                question: "What is an 'Input Device' used for?",
-                options: [
-                    "To display output on screen",
-                    "To enter data and instructions into a computer",
-                    "To store data permanently",
-                    "To process information"
-                ],
-                correct: 1
-            },
-            {
-                question: "What is 'Software'?",
-                options: [
-                    "A physical part of the computer",
-                    "A plastic or metal case",
-                    "A set of instructions that tells the computer what to do",
-                    "The brain of the computer"
-                ],
-                correct: 2
-            },
-            {
-                question: "What is the CPU also known as?",
-                options: [
-                    "Storage Device",
-                    "Input Device",
-                    "System Unit",
-                    "Processor or Microprocessor; the brain of the computer"
-                ],
-                correct: 3
-            },
-            {
-                question: "What do 'Storage Devices' do?",
-                options: [
-                    "Display output on screen",
-                    "Enter data into a computer",
-                    "Keep and store data and programs permanently",
-                    "Process all the instructions"
-                ],
-                correct: 2
-            }
-        ];
+    <!-- Main question area -->
+    <div class="main">
+      <div class="category-badge" id="cat-badge">Catégorie</div>
+      <div class="question-box">
+        <div class="question-text" id="question-text">Question ici</div>
+      </div>
 
-        // ===== QUIZ STATE =====
-        let TOTAL_QUESTIONS = 0;
-        let currentQuestions = [];
-        let currentIndex = 0;
-        let score = 0;
-        let answered = false;
-        let timerInterval = null;
-        let startTime = 0;
+      <div class="options-grid" id="options-grid"></div>
 
-        // ===== AUDIO (embedded as base64 oscillator-generated sounds) =====
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        let audioCtx = null;
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="next-btn" onclick="nextQuestion()">Suivant ➡</button>
+    </div>
+  </div>
 
-        function getAudioContext() {
-            if (!audioCtx) {
-                audioCtx = new AudioContext();
-            }
-            return audioCtx;
-        }
+  <!-- END SCREEN -->
+  <div id="end-screen">
+    <div class="big-emoji" id="end-emoji">🏆</div>
+    <h2 id="end-title">Bravo !</h2>
+    <div class="stars" id="end-stars"></div>
+    <div class="final-score-num" id="final-score-text"></div>
+    <p id="end-message"></p>
+    <button class="restart-btn" onclick="restartQuiz()">🔄 Rejouer !</button>
+  </div>
+</div>
 
-        function playCorrectSound() {
-            const ctx = getAudioContext();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain);
-            gain.connect(ctx.destination);
+<script>
+/* =====================================================================
+   QUESTIONS — extracted & converted from French PDFs (Classe 3)
+   ===================================================================== */
+const ALL_QUESTIONS = [
 
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
-            osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1); // E5
-            osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.2); // G5
+  /* ── CATÉGORIE : La France ── */
+  {
+    category: "🗺️ La France",
+    question: "La capitale de la France est :",
+    options: ["Lyon", "Marseille", "Paris", "Bordeaux"],
+    answer: "Paris",
+    explanation: "Paris est la capitale de la France ! 🗼"
+  },
+  {
+    category: "🗺️ La France",
+    question: "La forme de la carte de France ressemble à :",
+    options: ["un cercle", "un hexagone", "un triangle", "un carré"],
+    answer: "un hexagone",
+    explanation: "La France ressemble à un hexagone — on l'appelle aussi « l'Hexagone » ! 🔷"
+  },
+  {
+    category: "🗺️ La France",
+    question: "La monnaie (l'argent) de la France est :",
+    options: ["le franc", "le dollar", "l'euro", "la livre"],
+    answer: "l'euro",
+    explanation: "La France utilise l'euro depuis 2002. 💶"
+  },
+  {
+    category: "🗺️ La France",
+    question: "Le Camembert est un type de :",
+    options: ["fromage", "vin", "pain", "fruit"],
+    answer: "fromage",
+    explanation: "Le Camembert est un délicieux fromage français ! 🧀"
+  },
+  {
+    category: "🗺️ La France",
+    question: "Le symbole de la République française est :",
+    options: ["la tour Eiffel", "le coq", "le Louvre", "le fromage"],
+    answer: "le coq",
+    explanation: "Le coq gaulois est le symbole de la République française. 🐓"
+  },
+  {
+    category: "🗺️ La France",
+    question: "La tour Eiffel est un ________ célèbre en France.",
+    options: ["musée", "monument", "fromage", "fleuve"],
+    answer: "monument",
+    explanation: "La tour Eiffel est un monument très célèbre de Paris ! 🗼"
+  },
+  {
+    category: "🗺️ La France",
+    question: "Le drapeau français est :",
+    options: ["rouge, blanc, vert", "bleu, blanc, rouge", "rouge, blanc, bleu", "vert, blanc, rouge"],
+    answer: "bleu, blanc, rouge",
+    explanation: "Le drapeau français est bleu 🟦, blanc ⬜, rouge 🟥 — dans cet ordre !"
+  },
+  {
+    category: "🗺️ La France",
+    question: "L'euro est la monnaie de la France depuis :",
+    options: ["1990", "1998", "2002", "2010"],
+    answer: "2002",
+    explanation: "L'euro est utilisé en France depuis le 1er janvier 2002. 💶"
+  },
+  {
+    category: "🗺️ La France",
+    question: "Marseille est :",
+    options: ["un fromage", "une montagne", "une rivière", "une ville de France"],
+    answer: "une ville de France",
+    explanation: "Marseille est une grande ville du sud de la France ! 🏙️"
+  },
+  {
+    category: "🗺️ La France",
+    question: "Le Louvre est :",
+    options: ["une montagne", "un fromage", "un musée", "une rivière"],
+    answer: "un musée",
+    explanation: "Le Louvre est le célèbre musée de Paris ! 🖼️"
+  },
+  {
+    category: "🗺️ La France",
+    question: "La France est entourée par :",
+    options: ["la Seine / le Rhône", "la Méditerranée / l'Atlantique", "les Alpes / les Pyrénées", "la Loire / la Garonne"],
+    answer: "la Méditerranée / l'Atlantique",
+    explanation: "La France est bordée par la mer Méditerranée et l'océan Atlantique. 🌊"
+  },
+  {
+    category: "🗺️ La France",
+    question: "Le Rhin est :",
+    options: ["un fromage français", "une montagne en France", "un fleuve d'Europe", "un symbole français"],
+    answer: "un fleuve d'Europe",
+    explanation: "Le Rhin est un fleuve, pas un fromage ! C'est un fleuve d'Europe. 🌊"
+  },
 
-            gain.gain.setValueAtTime(0.3, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+  /* ── CATÉGORIE : Salutations ── */
+  {
+    category: "👋 Salutations",
+    question: "En matin (le matin), on dit :",
+    options: ["Bonsoir", "Au revoir", "Bonjour", "Bonne nuit"],
+    answer: "Bonjour",
+    explanation: "Le matin, on dit « Bonjour ! » ☀️"
+  },
+  {
+    category: "👋 Salutations",
+    question: "En soir (le soir), on dit :",
+    options: ["Bonjour", "Bonsoir", "Au revoir", "Bonne nuit"],
+    answer: "Bonsoir",
+    explanation: "Le soir, on dit « Bonsoir ! » 🌆"
+  },
+  {
+    category: "👋 Salutations",
+    question: "La nuit (midnight / bedtime), on dit :",
+    options: ["Bonne journée", "Bonne soirée", "Bonne nuit", "Bonjour"],
+    answer: "Bonne nuit",
+    explanation: "Avant de dormir, on dit « Bonne nuit ! » 🌙"
+  },
+  {
+    category: "👋 Salutations",
+    question: "Pour dire « Good bye » en français, on dit :",
+    options: ["Bonjour", "Salut", "Au revoir", "Merci"],
+    answer: "Au revoir",
+    explanation: "« Au revoir » signifie « Good bye » en anglais. 👋"
+  },
+  {
+    category: "👋 Salutations",
+    question: "« Salut » en anglais signifie :",
+    options: ["Good bye", "Good morning", "Hello", "Thank you"],
+    answer: "Hello",
+    explanation: "« Salut » est une façon informelle de dire « Hello » ! 😊"
+  },
+  {
+    category: "👋 Salutations",
+    question: "« Bonjour » en anglais signifie :",
+    options: ["Good evening", "Good night", "Good morning", "Good bye"],
+    answer: "Good morning",
+    explanation: "« Bonjour » = « Good morning » (ou « Hello » en général) ☀️"
+  },
+  {
+    category: "👋 Salutations",
+    question: "« Bonsoir » en anglais signifie :",
+    options: ["Good morning", "Good evening", "Good night", "Good bye"],
+    answer: "Good evening",
+    explanation: "« Bonsoir » = « Good evening » 🌇"
+  },
+  {
+    category: "👋 Salutations",
+    question: "« Bonne nuit » en anglais signifie :",
+    options: ["Good morning", "Good evening", "Good afternoon", "Good night"],
+    answer: "Good night",
+    explanation: "« Bonne nuit » = « Good night » 🌙✨"
+  },
+  {
+    category: "👋 Salutations",
+    question: "« Au revoir » en anglais signifie :",
+    options: ["Hello", "Good morning", "Thank you", "Good bye"],
+    answer: "Good bye",
+    explanation: "« Au revoir » = « Good bye » 👋"
+  },
+  {
+    category: "👋 Salutations",
+    question: "Pour répondre à « Comment ça va ? », on dit :",
+    options: ["Je m'appelle Léa", "Ça va bien, merci", "J'ai 9 ans", "J'habite à Paris"],
+    answer: "Ça va bien, merci",
+    explanation: "On répond « Ça va bien, merci ! » = « I am fine, thank you ! » 😄"
+  },
+  {
+    category: "👋 Salutations",
+    question: "« Désolé » en anglais signifie :",
+    options: ["Hello", "Good morning", "Sorry", "Thank you"],
+    answer: "Sorry",
+    explanation: "« Désolé » = « Sorry » 😔"
+  },
+  {
+    category: "👋 Salutations",
+    question: "« Et toi ? » en anglais signifie :",
+    options: ["And you?", "How old?", "Good morning", "See you!"],
+    answer: "And you?",
+    explanation: "« Et toi ? » = « And you? » 😊"
+  },
+  {
+    category: "👋 Salutations",
+    question: "« À bientôt » en anglais signifie :",
+    options: ["Good bye", "See you soon", "Good evening", "See you tomorrow"],
+    answer: "See you soon",
+    explanation: "« À bientôt » = « See you soon » 🤗"
+  },
+  {
+    category: "👋 Salutations",
+    question: "« À demain » en anglais signifie :",
+    options: ["See you soon", "Good bye", "See you tomorrow", "Good night"],
+    answer: "See you tomorrow",
+    explanation: "« À demain » = « See you tomorrow » 📅"
+  },
+  {
+    category: "👋 Salutations",
+    question: "« Bienvenue ! » en anglais signifie :",
+    options: ["Good bye", "Good morning", "Thank you", "Welcome"],
+    answer: "Welcome",
+    explanation: "« Bienvenue » = « Welcome » 🎉"
+  },
 
-            osc.start(ctx.currentTime);
-            osc.stop(ctx.currentTime + 0.4);
-        }
+  /* ── CATÉGORIE : Phrases et Questions ── */
+  {
+    category: "💬 Phrases et Questions",
+    question: "« Comment tu t'appelles ? » signifie :",
+    options: ["How old are you?", "How are you?", "What is your name?", "Where do you live?"],
+    answer: "What is your name?",
+    explanation: "« Comment tu t'appelles ? » = « What is your name? » 🙋"
+  },
+  {
+    category: "💬 Phrases et Questions",
+    question: "« Quel âge as-tu ? » signifie :",
+    options: ["What is your name?", "How old are you?", "How are you?", "Where do you live?"],
+    answer: "How old are you?",
+    explanation: "« Quel âge as-tu ? » = « How old are you? » 🎂"
+  },
+  {
+    category: "💬 Phrases et Questions",
+    question: "« Où habites-tu ? » signifie :",
+    options: ["How old are you?", "What is your name?", "How are you?", "Where do you live?"],
+    answer: "Where do you live?",
+    explanation: "« Où habites-tu ? » = « Where do you live? » 🏠"
+  },
+  {
+    category: "💬 Phrases et Questions",
+    question: "« Comment allez-vous ? » est une version ________ de « Comment ça va ? »",
+    options: ["informelle", "formelle", "amusante", "difficile"],
+    answer: "formelle",
+    explanation: "« Comment allez-vous ? » est la version formelle (polie) de « Comment ça va ? ». 👔"
+  },
+  {
+    category: "💬 Phrases et Questions",
+    question: "Pour répondre à « Quel âge as-tu ? », on dit :",
+    options: ["Je m'appelle Marie", "J'habite à Lyon", "J'ai 9 ans", "Ça va bien"],
+    answer: "J'ai 9 ans",
+    explanation: "On répond « J'ai ___ ans » pour donner son âge. 🎂"
+  },
+  {
+    category: "💬 Phrases et Questions",
+    question: "Pour répondre à « Où habites-tu ? », on dit :",
+    options: ["Je m'appelle Ali", "J'ai 10 ans", "J'habite à Paris", "Ça va bien"],
+    answer: "J'habite à Paris",
+    explanation: "On répond « J'habite à ___ » pour indiquer où on vit. 🏠"
+  },
 
-        function playWrongSound() {
-            const ctx = getAudioContext();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain);
-            gain.connect(ctx.destination);
+  /* ── CATÉGORIE : Vocabulaire ── */
+  {
+    category: "📚 Vocabulaire",
+    question: "« Pomme » en anglais signifie :",
+    options: ["flower", "apple", "cow", "juice"],
+    answer: "apple",
+    explanation: "« Pomme » = « apple » 🍎"
+  },
+  {
+    category: "📚 Vocabulaire",
+    question: "« Fleur » en anglais signifie :",
+    options: ["apple", "juice", "flower", "cow"],
+    answer: "flower",
+    explanation: "« Fleur » = « flower » 🌸"
+  },
+  {
+    category: "📚 Vocabulaire",
+    question: "« Vache » en anglais signifie :",
+    options: ["kangaroo", "juice", "flower", "cow"],
+    answer: "cow",
+    explanation: "« Vache » = « cow » 🐄"
+  },
+  {
+    category: "📚 Vocabulaire",
+    question: "« Jus » en anglais signifie :",
+    options: ["flower", "juice", "apple", "cow"],
+    answer: "juice",
+    explanation: "« Jus » = « juice » 🥤"
+  },
+  {
+    category: "📚 Vocabulaire",
+    question: "« Kangourou » en anglais signifie :",
+    options: ["kangaroo", "cow", "flower", "juice"],
+    answer: "kangaroo",
+    explanation: "C'est facile — « kangourou » = « kangaroo » 🦘"
+  },
+  {
+    category: "📚 Vocabulaire",
+    question: "« Drapeau français » en anglais signifie :",
+    options: ["French cheese", "French bread", "French flag", "French tower"],
+    answer: "French flag",
+    explanation: "« Drapeau » = « flag » — le drapeau français est bleu, blanc, rouge. 🇫🇷"
+  },
 
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(200, ctx.currentTime);
-            osc.frequency.setValueAtTime(150, ctx.currentTime + 0.15);
+  /* ── CATÉGORIE : Mots mélangés (Anagrammes) ── */
+  {
+    category: "🔤 Mots mélangés",
+    question: "Les lettres « N-O-B-J-U-O-R » forment le mot :",
+    options: ["BONJOIR", "BONJOUR", "BONJOUR", "BONROUJ"],
+    answer: "BONJOUR",
+    explanation: "BONJOUR ! C'est la façon de dire « Good morning » en français. ☀️"
+  },
+  {
+    category: "🔤 Mots mélangés",
+    question: "Les lettres « U-L-S-T-A » forment le mot :",
+    options: ["TALUS", "SALUS", "ALUTS", "SALUT"],
+    answer: "SALUT",
+    explanation: "SALUT ! C'est une façon informelle de dire bonjour. 😄"
+  },
+  {
+    category: "🔤 Mots mélangés",
+    question: "Les lettres « I-O-R-E-R-V-U-A » forment le mot :",
+    options: ["REVOLIUA", "AU REVOIR", "AUREVORI", "REVOILUA"],
+    answer: "AU REVOIR",
+    explanation: "AU REVOIR ! C'est la façon de dire « Good bye ». 👋"
+  },
+  {
+    category: "🔤 Mots mélangés",
+    question: "Les lettres « E-C-I-M-R » forment le mot :",
+    options: ["CRIME", "IMERCI", "MERCI", "RICME"],
+    answer: "MERCI",
+    explanation: "MERCI ! = « Thank you » 🙏"
+  },
+  {
+    category: "🔤 Mots mélangés",
+    question: "Les lettres « E-N-O-N-B-T-U-I-N » forment :",
+    options: ["BONNE NUIT", "BONNE UNIT", "NONNE BUIT", "BOINE NUNT"],
+    answer: "BONNE NUIT",
+    explanation: "BONNE NUIT ! = « Good night » 🌙"
+  },
 
-            gain.gain.setValueAtTime(0.2, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+  /* ── CATÉGORIE : Les Nombres ── */
+  {
+    category: "🔢 Les Nombres",
+    question: "Le chiffre 7 en français est :",
+    options: ["sept", "huit", "six", "cinq"],
+    answer: "sept",
+    explanation: "7 = « sept » 7️⃣"
+  },
+  {
+    category: "🔢 Les Nombres",
+    question: "Le chiffre 15 en français est :",
+    options: ["seize", "quinze", "treize", "quatorze"],
+    answer: "quinze",
+    explanation: "15 = « quinze » — 10 (dix) + 5 (cinq) = quinze ! 🔢"
+  },
+  {
+    category: "🔢 Les Nombres",
+    question: "Le chiffre 22 en français est :",
+    options: ["vingt-deux", "vingt et un", "vingt-trois", "vingt-quatre"],
+    answer: "vingt-deux",
+    explanation: "22 = « vingt-deux » — vingt (20) + deux (2) ! 🔢"
+  },
+  {
+    category: "🔢 Les Nombres",
+    question: "Le chiffre 30 en français est :",
+    options: ["trente", "treize", "trente et un", "vingt"],
+    answer: "trente",
+    explanation: "30 = « trente » 3️⃣0️⃣"
+  },
+  {
+    category: "🔢 Les Nombres",
+    question: "« Dix-sept » en chiffres, c'est :",
+    options: ["16", "17", "18", "19"],
+    answer: "17",
+    explanation: "« Dix-sept » = 17 — dix (10) + sept (7) = 17 ! 🔢"
+  },
+  {
+    category: "🔢 Les Nombres",
+    question: "« Vingt-neuf » en chiffres, c'est :",
+    options: ["28", "30", "29", "27"],
+    answer: "29",
+    explanation: "« Vingt-neuf » = 29 — vingt (20) + neuf (9) = 29 ! 🔢"
+  },
+  {
+    category: "🔢 Les Nombres",
+    question: "« Quatorze » en chiffres, c'est :",
+    options: ["13", "14", "15", "12"],
+    answer: "14",
+    explanation: "« Quatorze » = 14 🔢"
+  },
+  {
+    category: "🔢 Les Nombres",
+    question: "« Vingt et un » en chiffres, c'est :",
+    options: ["20", "21", "22", "23"],
+    answer: "21",
+    explanation: "« Vingt et un » = 21 — vingt (20) + un (1) = 21 ! 🔢"
+  },
 
-            osc.start(ctx.currentTime);
-            osc.stop(ctx.currentTime + 0.3);
-        }
+  /* ── CATÉGORIE : Calcul en Français ── */
+  {
+    category: "➕ Calcul en Français",
+    question: "3 + 3 = ? (en français)",
+    options: ["sept", "six", "deux", "cinq"],
+    answer: "six",
+    explanation: "3 + 3 = 6 = « six » 6️⃣"
+  },
+  {
+    category: "➕ Calcul en Français",
+    question: "7 + 5 = ? (en français)",
+    options: ["douze", "quatorze", "seize", "onze"],
+    answer: "douze",
+    explanation: "7 + 5 = 12 = « douze » 🔢"
+  },
+  {
+    category: "➕ Calcul en Français",
+    question: "4 – 2 = ? (en français)",
+    options: ["sept", "six", "deux", "trois"],
+    answer: "deux",
+    explanation: "4 – 2 = 2 = « deux » 2️⃣"
+  },
+  {
+    category: "➕ Calcul en Français",
+    question: "20 – 6 = ? (en français)",
+    options: ["douze", "quatorze", "seize", "quinze"],
+    answer: "quatorze",
+    explanation: "20 – 6 = 14 = « quatorze » 🔢"
+  },
+  {
+    category: "➕ Calcul en Français",
+    question: "5 + 1 = ? (en français)",
+    options: ["sept", "six", "deux", "cinq"],
+    answer: "six",
+    explanation: "5 + 1 = 6 = « six » 6️⃣"
+  },
+  {
+    category: "➕ Calcul en Français",
+    question: "8 + 8 = ? (en français)",
+    options: ["douze", "quatorze", "seize", "dix-huit"],
+    answer: "seize",
+    explanation: "8 + 8 = 16 = « seize » 🔢"
+  },
+  {
+    category: "➕ Calcul en Français",
+    question: "11 + 4 = ? (en français)",
+    options: ["quatorze", "quinze", "seize", "treize"],
+    answer: "quinze",
+    explanation: "11 + 4 = 15 = « quinze » 🔢"
+  },
+  {
+    category: "➕ Calcul en Français",
+    question: "20 – 3 = ? (en français)",
+    options: ["dix-sept", "dix-huit", "dix-neuf", "vingt"],
+    answer: "dix-sept",
+    explanation: "20 – 3 = 17 = « dix-sept » 🔢"
+  },
+  {
+    category: "➕ Calcul en Français",
+    question: "9 + 9 = ? (en français)",
+    options: ["dix-sept", "dix-huit", "dix-neuf", "seize"],
+    answer: "dix-huit",
+    explanation: "9 + 9 = 18 = « dix-huit » 🔢"
+  },
+  {
+    category: "➕ Calcul en Français",
+    question: "25 + 5 = ? (en français)",
+    options: ["vingt-huit", "vingt-neuf", "trente", "vingt-sept"],
+    answer: "trente",
+    explanation: "25 + 5 = 30 = « trente » 🔢"
+  },
 
-        function playWinSound() {
-            const ctx = getAudioContext();
-            const notes = [523.25, 659.25, 783.99, 1046.5];
-            notes.forEach((freq, i) => {
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.15);
-                gain.gain.setValueAtTime(0.3, ctx.currentTime + i * 0.15);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.15 + 0.3);
-                osc.start(ctx.currentTime + i * 0.15);
-                osc.stop(ctx.currentTime + i * 0.15 + 0.3);
-            });
-        }
+  /* ── CATÉGORIE : Suite de nombres ── */
+  {
+    category: "🔢 Les Nombres",
+    question: "Quel nombre manque ? 10 – 11 – 12 – __ – 14",
+    options: ["12", "13", "11", "15"],
+    answer: "13",
+    explanation: "La suite est 10, 11, 12, 13, 14 — le nombre manquant est « treize » (13) ! 🔢"
+  },
+  {
+    category: "🔢 Les Nombres",
+    question: "Quel nombre manque ? 27 – 28 – __ – 30",
+    options: ["29", "26", "30", "28"],
+    answer: "29",
+    explanation: "La suite est 27, 28, 29, 30 — le nombre manquant est « vingt-neuf » (29) ! 🔢"
+  },
+  {
+    category: "🔢 Les Nombres",
+    question: "Quel nombre manque ? 4 – 6 – 8 – __ – 12",
+    options: ["9", "10", "11", "7"],
+    answer: "10",
+    explanation: "Ce sont les nombres pairs : 4, 6, 8, 10, 12 — le manquant est « dix » (10) ! 🔢"
+  },
+  {
+    category: "🔢 Les Nombres",
+    question: "Quel nombre manque ? 19 – __ – 21 – 22",
+    options: ["18", "19", "20", "21"],
+    answer: "20",
+    explanation: "La suite est 19, 20, 21, 22 — le manquant est « vingt » (20) ! 🔢"
+  },
 
-        // ===== UTILITY FUNCTIONS =====
-        function shuffle(array) {
-            const arr = [...array];
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
-        }
+  /* ── CATÉGORIE : Vrai ou Faux ── */
+  {
+    category: "✅ Vrai ou Faux",
+    question: "Vrai ou Faux ? « Seize » = 16",
+    options: ["Vrai ✅", "Faux ❌ c'est 15", "Faux ❌ c'est 17", "Faux ❌ c'est 14"],
+    answer: "Vrai ✅",
+    explanation: "VRAI ! « Seize » = 16. Parfait ! 🎉"
+  },
+  {
+    category: "✅ Vrai ou Faux",
+    question: "Vrai ou Faux ? « Vingt-trois » = 33",
+    options: ["Vrai ✅", "Faux ❌ c'est 23", "Faux ❌ c'est 32", "Faux ❌ c'est 13"],
+    answer: "Faux ❌ c'est 23",
+    explanation: "FAUX ! « Vingt-trois » = 23, pas 33. Vingt (20) + trois (3) = 23. 🔢"
+  },
+  {
+    category: "✅ Vrai ou Faux",
+    question: "Vrai ou Faux ? « Trente » = 30",
+    options: ["Vrai ✅", "Faux ❌ c'est 13", "Faux ❌ c'est 33", "Faux ❌ c'est 20"],
+    answer: "Vrai ✅",
+    explanation: "VRAI ! « Trente » = 30. Bien joué ! 🎉"
+  },
+  {
+    category: "✅ Vrai ou Faux",
+    question: "Vrai ou Faux ? « Douze » = 13",
+    options: ["Vrai ✅", "Faux ❌ c'est 12", "Faux ❌ c'est 11", "Faux ❌ c'est 14"],
+    answer: "Faux ❌ c'est 12",
+    explanation: "FAUX ! « Douze » = 12, pas 13. 🔢"
+  },
+  {
+    category: "✅ Vrai ou Faux",
+    question: "Vrai ou Faux ? L'euro est la monnaie de la France depuis 2002.",
+    options: ["Vrai ✅", "Faux ❌ depuis 1990", "Faux ❌ depuis 2010", "Faux ❌ depuis 1999"],
+    answer: "Vrai ✅",
+    explanation: "VRAI ! L'euro est utilisé en France depuis le 1er janvier 2002. 💶"
+  },
+  {
+    category: "✅ Vrai ou Faux",
+    question: "Vrai ou Faux ? Le drapeau français est bleu, blanc, rouge.",
+    options: ["Vrai ✅", "Faux ❌ c'est rouge, blanc, bleu", "Faux ❌ c'est vert, blanc, rouge", "Faux ❌ c'est bleu, rouge, blanc"],
+    answer: "Vrai ✅",
+    explanation: "VRAI ! Le drapeau français est bleu 🟦, blanc ⬜, rouge 🟥 — de gauche à droite."
+  },
+  {
+    category: "✅ Vrai ou Faux",
+    question: "Vrai ou Faux ? Le Louvre est une montagne en France.",
+    options: ["Vrai ✅", "Faux ❌ c'est un musée", "Faux ❌ c'est une rivière", "Faux ❌ c'est un fromage"],
+    answer: "Faux ❌ c'est un musée",
+    explanation: "FAUX ! Le Louvre est un musée célèbre à Paris, pas une montagne ! 🖼️"
+  }
+];
 
-        function selectAllQuestions() {
-            return shuffle(allQuestions);
-        }
+/* =====================================================================
+   GAME STATE
+   ===================================================================== */
+let questions = [];
+let currentIndex = 0;
+let score = 0;
+let wrongCount = 0;
+let answered = false;
+let timerInterval = null;
+let timeLeft = 15;
+const TIMER_SECS = 15;
+const CIRCUMFERENCE = 2 * Math.PI * 24; // r=24
 
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
-        }
+/* =====================================================================
+   AUDIO (Web Audio API — no library needed)
+   ===================================================================== */
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function playTone(freq, type, duration, gainVal = 0.3) {
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = freq;
+    osc.type = type;
+    gain.gain.setValueAtTime(gainVal, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + duration);
+  } catch(e) {}
+}
+function playCorrectSound() {
+  playTone(523, 'sine', 0.15);
+  setTimeout(() => playTone(659, 'sine', 0.15), 120);
+  setTimeout(() => playTone(784, 'sine', 0.25), 240);
+}
+function playWrongSound() {
+  playTone(220, 'sawtooth', 0.15, 0.2);
+  setTimeout(() => playTone(180, 'sawtooth', 0.2, 0.2), 150);
+}
+function playTickSound() {
+  playTone(880, 'sine', 0.05, 0.05);
+}
 
-        function startTimer() {
-            startTime = Date.now();
-            timerInterval = setInterval(() => {
-                const elapsed = Math.floor((Date.now() - startTime) / 1000);
-                document.getElementById('timerText').textContent = formatTime(elapsed);
-            }, 1000);
-        }
+/* =====================================================================
+   CONFETTI
+   ===================================================================== */
+function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const colors = ['#667eea','#764ba2','#ffdc00','#ff851b','#2ecc40','#ff4136','#f012be'];
+  const pieces = Array.from({length: 160}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height - canvas.height,
+    w: Math.random() * 10 + 6,
+    h: Math.random() * 6 + 4,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    speed: Math.random() * 4 + 2,
+    angle: Math.random() * 360,
+    spin: (Math.random() - 0.5) * 6
+  }));
+  let frame = 0;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.angle * Math.PI) / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+      p.y += p.speed;
+      p.angle += p.spin;
+      if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
+    });
+    frame++;
+    if (frame < 180) requestAnimationFrame(draw);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  draw();
+}
 
-        function stopTimer() {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
-        }
+/* =====================================================================
+   SHUFFLE
+   ===================================================================== */
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
-        function getElapsedTime() {
-            return Math.floor((Date.now() - startTime) / 1000);
-        }
+/* =====================================================================
+   INIT
+   ===================================================================== */
+document.getElementById('total-q-count').textContent = ALL_QUESTIONS.length;
 
-        // ===== QUIZ FUNCTIONS =====
-        function startQuiz() {
-            currentQuestions = selectAllQuestions();
-            TOTAL_QUESTIONS = currentQuestions.length;
-            currentIndex = 0;
-            score = 0;
-            answered = false;
+function startQuiz() {
+  questions = shuffle(ALL_QUESTIONS);
+  currentIndex = 0;
+  score = 0;
+  wrongCount = 0;
+  document.getElementById('score-correct').textContent = 0;
+  document.getElementById('score-wrong').textContent = 0;
+  document.getElementById('q-total').textContent = questions.length;
 
-            document.getElementById('startScreen').style.display = 'none';
-            document.getElementById('endScreen').style.display = 'none';
-            document.getElementById('quizScreen').style.display = 'block';
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('end-screen').style.display = 'none';
+  document.getElementById('quiz-area').style.display = 'block';
 
-            startTimer();
-            showQuestion();
-        }
+  loadQuestion();
+}
 
-        function showQuestion() {
-            answered = false;
-            const q = currentQuestions[currentIndex];
+/* =====================================================================
+   LOAD QUESTION
+   ===================================================================== */
+function loadQuestion() {
+  answered = false;
+  const q = questions[currentIndex];
 
-            // Shuffle options while tracking correct answer
-            const correctAnswer = q.options[q.correct];
-            const shuffledOptions = shuffle(q.options);
-            const newCorrectIndex = shuffledOptions.indexOf(correctAnswer);
+  // Progress
+  document.getElementById('q-num').textContent = currentIndex + 1;
+  const pct = (currentIndex / questions.length) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
 
-            // Store shuffled state
-            currentQuestions[currentIndex]._shuffledOptions = shuffledOptions;
-            currentQuestions[currentIndex]._shuffledCorrect = newCorrectIndex;
+  // Category
+  document.getElementById('cat-badge').textContent = q.category;
+  document.getElementById('q-category').textContent = q.category;
 
-            // Update UI
-            document.getElementById('progressFill').style.width = ((currentIndex / TOTAL_QUESTIONS) * 100) + '%';
-            document.getElementById('scoreText').textContent = score;
-            document.getElementById('questionNumber').textContent = `Question ${currentIndex + 1} of ${TOTAL_QUESTIONS}`;
-            document.getElementById('questionText').textContent = q.question;
+  // Question text
+  document.getElementById('question-text').textContent = q.question;
 
-            const grid = document.getElementById('optionsGrid');
-            grid.innerHTML = '';
+  // Options
+  const grid = document.getElementById('options-grid');
+  grid.innerHTML = '';
+  const labels = ['A', 'B', 'C', 'D'];
+  // Shuffle options display order
+  const idxOrder = shuffle([0,1,2,3]);
+  idxOrder.forEach((optIdx, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.setAttribute('data-label', labels[i]);
+    btn.setAttribute('data-value', q.options[optIdx]);
+    btn.textContent = q.options[optIdx];
+    btn.onclick = () => selectAnswer(btn, q);
+    grid.appendChild(btn);
+  });
 
-            shuffledOptions.forEach((option, index) => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.textContent = option;
-                btn.onclick = () => selectAnswer(index, newCorrectIndex, btn);
-                grid.appendChild(btn);
-            });
+  // Feedback hidden
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback';
+  fb.textContent = '';
 
-            document.getElementById('nextBtn').classList.remove('show');
-            const feedback = document.getElementById('feedback');
-            feedback.classList.remove('show', 'correct', 'wrong');
-            feedback.textContent = '';
-        }
+  // Next btn hidden
+  document.getElementById('next-btn').classList.remove('visible');
 
-        function selectAnswer(selected, correct, btn) {
-            if (answered) return;
-            answered = true;
+  // Start timer
+  startTimer();
+}
 
-            const buttons = document.querySelectorAll('.option-btn');
-            const feedback = document.getElementById('feedback');
+/* =====================================================================
+   TIMER
+   ===================================================================== */
+function startTimer() {
+  clearInterval(timerInterval);
+  timeLeft = TIMER_SECS;
+  updateTimerUI();
 
-            buttons.forEach(b => b.classList.add('disabled'));
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerUI();
+    if (timeLeft <= 5 && timeLeft > 0) playTickSound();
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      handleTimeout();
+    }
+  }, 1000);
+}
 
-            if (selected === correct) {
-                score++;
-                btn.classList.add('correct');
-                document.getElementById('scoreText').textContent = score;
-                feedback.textContent = '✅ Correct! Great job!';
-                feedback.classList.add('show', 'correct');
-                playCorrectSound();
-            } else {
-                btn.classList.add('wrong');
-                buttons[correct].classList.add('show-correct');
-                feedback.textContent = '❌ Oops! The correct answer is highlighted.';
-                feedback.classList.add('show', 'wrong');
-                playWrongSound();
-            }
+function updateTimerUI() {
+  const numEl = document.getElementById('timer-num');
+  const ring  = document.getElementById('timer-ring');
+  numEl.textContent = timeLeft;
+  const offset = CIRCUMFERENCE * (1 - timeLeft / TIMER_SECS);
+  ring.style.strokeDashoffset = offset;
 
-            document.getElementById('nextBtn').classList.add('show');
-        }
+  if (timeLeft <= 5) {
+    numEl.classList.add('timer-urgent');
+    ring.style.stroke = '#ff4136';
+  } else {
+    numEl.classList.remove('timer-urgent');
+    ring.style.stroke = '#764ba2';
+  }
+}
 
-        function nextQuestion() {
-            currentIndex++;
-            if (currentIndex >= TOTAL_QUESTIONS) {
-                showEndScreen();
-            } else {
-                showQuestion();
-            }
-        }
+function handleTimeout() {
+  if (answered) return;
+  answered = true;
+  playWrongSound();
+  wrongCount++;
+  document.getElementById('score-wrong').textContent = wrongCount;
 
-        function showEndScreen() {
-            stopTimer();
-            const elapsed = getElapsedTime();
-            document.getElementById('quizScreen').style.display = 'none';
-            document.getElementById('endScreen').style.display = 'block';
+  // Highlight correct answer
+  const q = questions[currentIndex];
+  document.querySelectorAll('.option-btn').forEach(btn => {
+    btn.disabled = true;
+    if (btn.getAttribute('data-value') === q.answer) btn.classList.add('correct');
+  });
 
-            const percent = Math.round((score / TOTAL_QUESTIONS) * 100);
-            document.getElementById('finalScore').textContent = `${score} / ${TOTAL_QUESTIONS} (${percent}%)`;
-            document.getElementById('timeResult').textContent = `⏱️ Time: ${formatTime(elapsed)}`;
+  showFeedback(false, `⏰ Temps écoulé ! La bonne réponse était : « ${q.answer} » — ${q.explanation}`);
+  document.getElementById('next-btn').classList.add('visible');
+}
 
-            let emoji, title, message;
-            if (percent >= 90) {
-                emoji = '🏆🌟';
-                title = 'Amazing!';
-                message = "You're a Computer Science superstar! Incredible work!";
-                createConfetti();
-            } else if (percent >= 70) {
-                emoji = '🎉😊';
-                title = 'Great Job!';
-                message = "You know your computers well! Keep it up!";
-                createConfetti();
-            } else if (percent >= 50) {
-                emoji = '👍💪';
-                title = 'Good Effort!';
-                message = "Nice try! Practice a bit more and you'll be a pro!";
-            } else {
-                emoji = '📚🤓';
-                title = 'Keep Learning!';
-                message = "Don't worry! Read the chapter again and try once more!";
-            }
+/* =====================================================================
+   SELECT ANSWER
+   ===================================================================== */
+function selectAnswer(btn, q) {
+  if (answered) return;
+  answered = true;
+  clearInterval(timerInterval);
 
-            document.getElementById('endEmoji').textContent = emoji;
-            document.getElementById('endTitle').textContent = title;
-            document.getElementById('endMessage').textContent = message;
+  const selected = btn.getAttribute('data-value');
+  const correct  = selected === q.answer;
 
-            playWinSound();
-        }
+  // Disable all buttons and mark
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.disabled = true;
+    if (b.getAttribute('data-value') === q.answer) b.classList.add('correct');
+  });
+  if (!correct) btn.classList.add('wrong');
 
-        function restartQuiz() {
-            document.getElementById('endScreen').style.display = 'none';
-            startQuiz();
-        }
+  if (correct) {
+    score++;
+    document.getElementById('score-correct').textContent = score;
+    playCorrectSound();
+    showFeedback(true, `🎉 Bravo ! ${q.explanation}`);
+  } else {
+    wrongCount++;
+    document.getElementById('score-wrong').textContent = wrongCount;
+    playWrongSound();
+    showFeedback(false, `😔 Pas tout à fait ! La bonne réponse est « ${q.answer} ». ${q.explanation}`);
+  }
 
-        function createConfetti() {
-            const colors = ['#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#54a0ff', '#00b894', '#fd79a8'];
-            const container = document.createElement('div');
-            container.className = 'confetti';
-            document.body.appendChild(container);
+  document.getElementById('next-btn').classList.add('visible');
+}
 
-            for (let i = 0; i < 50; i++) {
-                const piece = document.createElement('div');
-                piece.className = 'confetti-piece';
-                piece.style.left = Math.random() * 100 + '%';
-                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                piece.style.animationDelay = Math.random() * 2 + 's';
-                piece.style.animationDuration = (2 + Math.random() * 2) + 's';
-                container.appendChild(piece);
-            }
+/* =====================================================================
+   FEEDBACK
+   ===================================================================== */
+function showFeedback(correct, text) {
+  const fb = document.getElementById('feedback');
+  fb.textContent = text;
+  fb.className = 'feedback show ' + (correct ? 'correct-fb' : 'wrong-fb');
+}
 
-            setTimeout(() => container.remove(), 5000);
-        }
-    </script>
+/* =====================================================================
+   NEXT
+   ===================================================================== */
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex >= questions.length) {
+    showEndScreen();
+  } else {
+    loadQuestion();
+  }
+}
+
+/* =====================================================================
+   END SCREEN
+   ===================================================================== */
+function showEndScreen() {
+  clearInterval(timerInterval);
+  document.getElementById('quiz-area').style.display = 'none';
+  const endEl = document.getElementById('end-screen');
+  endEl.style.display = 'block';
+
+  const total = questions.length;
+  const pct   = score / total;
+
+  // Stars
+  let stars = '';
+  if (pct >= 0.9)      stars = '⭐⭐⭐⭐⭐';
+  else if (pct >= 0.7) stars = '⭐⭐⭐⭐';
+  else if (pct >= 0.5) stars = '⭐⭐⭐';
+  else if (pct >= 0.3) stars = '⭐⭐';
+  else                 stars = '⭐';
+
+  // Emoji + title + message
+  let emoji, title, msg;
+  if (pct >= 0.9) {
+    emoji = '🏆'; title = 'Incroyable !';
+    msg = `Tu es une vraie star du français ! ${score} bonnes réponses sur ${total}. Félicitations ! 🥳`;
+    launchConfetti();
+  } else if (pct >= 0.7) {
+    emoji = '🌟'; title = 'Excellent !';
+    msg = `Très bien joué ! ${score} bonnes réponses sur ${total}. Continue comme ça ! 😊`;
+    launchConfetti();
+  } else if (pct >= 0.5) {
+    emoji = '👍'; title = 'Bien joué !';
+    msg = `${score} bonnes réponses sur ${total}. Tu progresses ! Entraîne-toi encore un peu. 💪`;
+  } else if (pct >= 0.3) {
+    emoji = '📚'; title = 'Continue d\'apprendre !';
+    msg = `${score} bonnes réponses sur ${total}. Relis tes notes et réessaie — tu peux le faire ! 📖`;
+  } else {
+    emoji = '💪'; title = 'Courage !';
+    msg = `${score} bonnes réponses sur ${total}. Ne t'inquiète pas — avec de la pratique, tu vas t'améliorer ! 🌈`;
+  }
+
+  document.getElementById('end-emoji').textContent = emoji;
+  document.getElementById('end-title').textContent = title;
+  document.getElementById('end-stars').textContent = stars;
+  document.getElementById('final-score-text').textContent = `${score} / ${total}`;
+  document.getElementById('end-message').textContent = msg;
+}
+
+/* =====================================================================
+   RESTART
+   ===================================================================== */
+function restartQuiz() {
+  document.getElementById('end-screen').style.display = 'none';
+  document.getElementById('start-screen').style.display = 'block';
+}
+</script>
 </body>
 </html>
