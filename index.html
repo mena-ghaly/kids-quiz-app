@@ -1,1475 +1,1461 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🇫🇷 Quiz Français – Classe 3</title>
-  <style>
-    /* ===== RESET & BASE ===== */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 مراجعة الاختبار التقييمي - الصف الثالث 🌟</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    :root {
-      --blue:   #1a73e8;
-      --green:  #2ecc40;
-      --red:    #ff4136;
-      --yellow: #ffdc00;
-      --orange: #ff851b;
-      --purple: #b10dc9;
-      --pink:   #f012be;
-      --bg:     #f0f4ff;
-      --white:  #ffffff;
-      --text:   #222;
-      --radius: 18px;
-    }
+        :root {
+            --primary: #6C63FF;
+            --secondary: #FF6584;
+            --success: #00C853;
+            --warning: #FFD600;
+            --info: #00B0FF;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            --btn-shadow: 0 8px 25px rgba(108, 99, 255, 0.4);
+        }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 12px;
-    }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-    /* ===== CONTAINER ===== */
-    .app {
-      background: var(--white);
-      border-radius: 28px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.3);
-      width: 100%;
-      max-width: 680px;
-      overflow: hidden;
-    }
+        /* Animated Background Bubbles */
+        .bubbles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
 
-    /* ===== HEADER ===== */
-    .header {
-      background: linear-gradient(90deg, #667eea, #764ba2);
-      color: white;
-      padding: 18px 24px 14px;
-      text-align: center;
-    }
-    .header h1 { font-size: clamp(1.3rem, 5vw, 1.8rem); letter-spacing: 1px; }
-    .header p  { font-size: 0.9rem; opacity: .85; margin-top: 4px; }
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 15s infinite;
+        }
 
-    /* ===== PROGRESS BAR ===== */
-    .progress-wrap {
-      padding: 14px 24px 0;
-      background: #f7f9ff;
-    }
-    .progress-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      color: #555;
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-    .progress-bar-bg {
-      height: 12px;
-      background: #e0e6ff;
-      border-radius: 99px;
-      overflow: hidden;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #667eea, #764ba2);
-      border-radius: 99px;
-      transition: width .5s ease;
-    }
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.1; }
+            90% { opacity: 0.1; }
+            100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
+        }
 
-    /* ===== TIMER ===== */
-    .timer-row {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 24px 6px;
-      background: #f7f9ff;
-    }
-    .timer-circle {
-      position: relative;
-      width: 56px;
-      height: 56px;
-    }
-    .timer-circle svg {
-      position: absolute;
-      top: 0; left: 0;
-      transform: rotate(-90deg);
-    }
-    .timer-circle .timer-num {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: #764ba2;
-    }
-    .timer-urgent { color: var(--red) !important; animation: pulse 0.5s infinite alternate; }
-    @keyframes pulse { from { transform: translate(-50%,-50%) scale(1); } to { transform: translate(-50%,-50%) scale(1.15); } }
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    /* ===== MAIN AREA ===== */
-    .main {
-      padding: 20px 24px 28px;
-      background: #f7f9ff;
-    }
+        /* Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 40px;
+            width: 100%;
+            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(10px);
+            animation: slideUp 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
 
-    /* ===== CATEGORY BADGE ===== */
-    .category-badge {
-      display: inline-block;
-      background: linear-gradient(90deg, #667eea, #764ba2);
-      color: white;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: .5px;
-      text-transform: uppercase;
-      padding: 4px 12px;
-      border-radius: 99px;
-      margin-bottom: 10px;
-    }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #FF6584, #6C63FF, #00C853, #FFD600);
+            border-radius: 30px 30px 0 0;
+        }
 
-    /* ===== QUESTION ===== */
-    .question-box {
-      background: white;
-      border-radius: var(--radius);
-      padding: 20px;
-      margin-bottom: 18px;
-      box-shadow: 0 4px 16px rgba(102,126,234,.12);
-      min-height: 90px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .question-text {
-      font-size: clamp(1.05rem, 3.5vw, 1.25rem);
-      font-weight: 700;
-      color: var(--text);
-      text-align: center;
-      line-height: 1.45;
-    }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    /* ===== OPTIONS GRID ===== */
-    .options-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    @media (max-width: 420px) { .options-grid { grid-template-columns: 1fr; } }
+        /* Welcome Screen */
+        .welcome-title {
+            font-size: 2.5em;
+            font-weight: 900;
+            text-align: center;
+            background: linear-gradient(135deg, #6C63FF, #FF6584);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
 
-    .option-btn {
-      background: white;
-      border: 3px solid #dde3ff;
-      border-radius: var(--radius);
-      padding: 16px 14px;
-      font-size: clamp(0.95rem, 3vw, 1.08rem);
-      font-weight: 700;
-      color: #333;
-      cursor: pointer;
-      text-align: center;
-      transition: transform .12s, border-color .15s, background .15s, box-shadow .15s;
-      line-height: 1.3;
-      box-shadow: 0 3px 10px rgba(0,0,0,.07);
-      position: relative;
-      overflow: hidden;
-    }
-    .option-btn:hover:not(:disabled) {
-      border-color: #667eea;
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(102,126,234,.22);
-    }
-    .option-btn:active:not(:disabled) { transform: translateY(0); }
-    .option-btn:disabled { cursor: not-allowed; }
+        .welcome-subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 30px;
+        }
 
-    /* label letters A B C D */
-    .option-btn::before {
-      content: attr(data-label);
-      display: inline-block;
-      background: #e8ecff;
-      color: #667eea;
-      border-radius: 50%;
-      width: 26px;
-      height: 26px;
-      line-height: 26px;
-      text-align: center;
-      font-size: 0.8rem;
-      margin-right: 8px;
-      font-weight: 800;
-      flex-shrink: 0;
-      transition: background .15s, color .15s;
-    }
-    .option-btn { display: flex; align-items: center; }
+        .mascot {
+            text-align: center;
+            font-size: 5em;
+            animation: bounce 2s infinite;
+            margin: 20px 0;
+        }
 
-    /* correct / wrong states */
-    .option-btn.correct {
-      background: #e6ffed;
-      border-color: var(--green);
-      color: #1a7a30;
-    }
-    .option-btn.correct::before { background: var(--green); color: white; }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
 
-    .option-btn.wrong {
-      background: #fff0f0;
-      border-color: var(--red);
-      color: #8b0000;
-      animation: shake 0.4s ease;
-    }
-    .option-btn.wrong::before { background: var(--red); color: white; }
+        /* Settings */
+        .settings-group {
+            margin: 20px 0;
+        }
 
-    @keyframes shake {
-      0%,100% { transform: translateX(0); }
-      20%      { transform: translateX(-8px); }
-      40%      { transform: translateX(8px); }
-      60%      { transform: translateX(-6px); }
-      80%      { transform: translateX(6px); }
-    }
+        .settings-label {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #444;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    /* ===== FEEDBACK BANNER ===== */
-    .feedback {
-      border-radius: var(--radius);
-      padding: 12px 18px;
-      margin-top: 14px;
-      font-size: 1rem;
-      font-weight: 700;
-      text-align: center;
-      display: none;
-      animation: fadeIn .2s ease;
-    }
-    .feedback.show { display: block; }
-    .feedback.correct-fb { background: #e6ffed; color: #1a7a30; border: 2px solid #2ecc40; }
-    .feedback.wrong-fb   { background: #fff0f0; color: #8b0000; border: 2px solid #ff4136; }
-    @keyframes fadeIn { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform:none; } }
+        .settings-label .emoji {
+            font-size: 1.3em;
+        }
 
-    /* ===== NEXT BUTTON ===== */
-    .next-btn {
-      display: none;
-      margin: 16px auto 0;
-      background: linear-gradient(90deg, #667eea, #764ba2);
-      color: white;
-      border: none;
-      border-radius: 99px;
-      padding: 14px 42px;
-      font-size: 1.05rem;
-      font-weight: 800;
-      cursor: pointer;
-      letter-spacing: .5px;
-      box-shadow: 0 6px 20px rgba(102,126,234,.35);
-      transition: transform .15s, box-shadow .15s;
-    }
-    .next-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(102,126,234,.45); }
-    .next-btn.visible { display: block; }
+        .settings-select, .settings-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 1.1em;
+            font-family: 'Tajawal', sans-serif;
+            transition: all 0.3s;
+            background: #f8f9fa;
+            direction: rtl;
+        }
 
-    /* ===== SCORE PILL ===== */
-    .score-pill {
-      display: flex;
-      justify-content: center;
-      gap: 18px;
-      padding: 10px 24px 0;
-      background: #f7f9ff;
-    }
-    .pill {
-      background: white;
-      border-radius: 99px;
-      padding: 6px 18px;
-      font-size: 0.88rem;
-      font-weight: 800;
-      box-shadow: 0 2px 8px rgba(0,0,0,.08);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .pill.correct-pill { color: #1a7a30; }
-    .pill.wrong-pill   { color: #8b0000; }
+        .settings-select:focus, .settings-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.1);
+        }
 
-    /* ===== START SCREEN ===== */
-    #start-screen {
-      padding: 40px 24px;
-      text-align: center;
-      background: #f7f9ff;
-    }
-    #start-screen .big-emoji { font-size: 5rem; margin-bottom: 10px; }
-    #start-screen h2 { font-size: 1.6rem; color: #764ba2; margin-bottom: 8px; }
-    #start-screen p  { color: #555; font-size: 1rem; margin-bottom: 24px; line-height: 1.5; }
-    .start-btn {
-      background: linear-gradient(90deg, #667eea, #764ba2);
-      color: white;
-      border: none;
-      border-radius: 99px;
-      padding: 16px 52px;
-      font-size: 1.2rem;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 8px 24px rgba(102,126,234,.4);
-      transition: transform .15s;
-    }
-    .start-btn:hover { transform: scale(1.04); }
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.3em;
+            font-weight: 700;
+            font-family: 'Tajawal', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
 
-    /* ===== END SCREEN ===== */
-    #end-screen {
-      display: none;
-      padding: 36px 24px 40px;
-      text-align: center;
-      background: #f7f9ff;
-    }
-    .stars { font-size: 3rem; letter-spacing: 6px; margin: 12px 0; }
-    #end-screen h2 { font-size: 1.7rem; color: #764ba2; margin-bottom: 6px; }
-    .final-score-num { font-size: 3.5rem; font-weight: 900; color: #667eea; margin: 8px 0; }
-    #end-screen p { color: #555; font-size: 1rem; margin-bottom: 20px; }
-    .restart-btn {
-      background: linear-gradient(90deg, #667eea, #764ba2);
-      color: white;
-      border: none;
-      border-radius: 99px;
-      padding: 14px 44px;
-      font-size: 1.1rem;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 6px 20px rgba(102,126,234,.35);
-      transition: transform .15s;
-    }
-    .restart-btn:hover { transform: scale(1.04); }
+        .btn-primary {
+            background: linear-gradient(135deg, #6C63FF, #5a52d5);
+            color: white;
+            box-shadow: var(--btn-shadow);
+            width: 100%;
+            margin-top: 20px;
+        }
 
-    /* ===== QUIZ AREA (hidden until started) ===== */
-    #quiz-area { display: none; }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(108, 99, 255, 0.5);
+        }
 
-    /* ===== CONFETTI canvas ===== */
-    #confetti-canvas {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 9999;
-    }
-  </style>
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Quiz Screen */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .score-display {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .score-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #6C63FF, #FF6584);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .question-number {
+            text-align: center;
+            font-size: 0.95em;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.8;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0f0ff, #fff0f5);
+            border-radius: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .option-btn {
+            padding: 20px 25px;
+            border: 3px solid #e8e8e8;
+            border-radius: 20px;
+            background: white;
+            font-size: 1.2em;
+            font-weight: 600;
+            font-family: 'Tajawal', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: right;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(108, 99, 255, 0.15);
+        }
+
+        .option-btn.correct {
+            border-color: var(--success);
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            animation: correctPulse 0.5s;
+        }
+
+        .option-btn.wrong {
+            border-color: var(--secondary);
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+            animation: shake 0.5s;
+        }
+
+        .option-btn.disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        @keyframes correctPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Timer */
+        .timer-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .timer-circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: 900;
+            color: white;
+            background: conic-gradient(var(--primary) var(--timer-progress, 100%), #e0e0e0 0%);
+            position: relative;
+        }
+
+        .timer-circle::before {
+            content: attr(data-time);
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .timer-warning {
+            animation: timerPulse 0.5s infinite;
+        }
+
+        @keyframes timerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Feedback */
+        .feedback-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feedback-overlay.show {
+            opacity: 1;
+        }
+
+        .feedback-message {
+            font-size: 3em;
+            font-weight: 900;
+            text-align: center;
+            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0) rotate(-10deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        /* Hint */
+        .hint-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 10px 20px;
+            border: 2px solid #FFD600;
+            border-radius: 15px;
+            background: #FFFDE7;
+            font-size: 1em;
+            font-weight: 600;
+            font-family: 'Tajawal', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        .hint-btn:hover {
+            background: #FFF9C4;
+            transform: scale(1.05);
+        }
+
+        .hint-text {
+            margin-top: 10px;
+            padding: 15px;
+            background: #FFFDE7;
+            border-radius: 15px;
+            border: 2px solid #FFD600;
+            font-size: 1.05em;
+            color: #555;
+            display: none;
+            animation: slideUp 0.3s;
+        }
+
+        .hint-text.show {
+            display: block;
+        }
+
+        /* TTS Button */
+        .tts-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 10px 20px;
+            border: 2px solid var(--info);
+            border-radius: 15px;
+            background: #E1F5FE;
+            font-size: 1em;
+            font-weight: 600;
+            font-family: 'Tajawal', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+            margin-right: 10px;
+        }
+
+        .tts-btn:hover {
+            background: #B3E5FC;
+            transform: scale(1.05);
+        }
+
+        /* Results Screen */
+        .results-card {
+            text-align: center;
+        }
+
+        .results-score {
+            font-size: 4em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #6C63FF, #FF6584);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 20px 0;
+        }
+
+        .results-stars {
+            font-size: 3em;
+            margin: 15px 0;
+            animation: bounce 1.5s infinite;
+        }
+
+        .results-badge {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #FFD600, #FFA000);
+            border-radius: 20px;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #333;
+            margin: 15px 0;
+            box-shadow: 0 5px 20px rgba(255, 214, 0, 0.4);
+        }
+
+        .results-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 1em;
+            color: #888;
+            font-weight: 600;
+        }
+
+        .motivational-message {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #555;
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0f0ff, #fff0f5);
+            border-radius: 15px;
+        }
+
+        /* Confetti */
+        .confetti-piece {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            top: -20px;
+            z-index: 9999;
+            animation: confettiFall 3s linear forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { top: -20px; opacity: 1; transform: rotate(0deg); }
+            100% { top: 110vh; opacity: 0; transform: rotate(720deg); }
+        }
+
+        /* Level Badge */
+        .level-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 15px;
+            background: linear-gradient(135deg, #E8EAF6, #C5CAE9);
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9em;
+            color: #3F51B5;
+        }
+
+        /* Fun Fact */
+        .fun-fact {
+            margin-top: 15px;
+            padding: 15px;
+            background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+            border-radius: 15px;
+            border: 2px solid #66BB6A;
+            font-size: 1em;
+            color: #2E7D32;
+            display: none;
+            animation: slideUp 0.3s;
+        }
+
+        .fun-fact.show {
+            display: block;
+        }
+
+        /* Hidden sections */
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .card {
+                padding: 25px 20px;
+                border-radius: 25px;
+            }
+            .welcome-title {
+                font-size: 1.8em;
+            }
+            .question-text {
+                font-size: 1.2em;
+                padding: 15px;
+            }
+            .option-btn {
+                padding: 15px 18px;
+                font-size: 1.05em;
+            }
+            .btn {
+                padding: 15px 30px;
+                font-size: 1.1em;
+            }
+            .quiz-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .score-display {
+                justify-content: center;
+            }
+        }
+
+        /* Stars animation */
+        .star-burst {
+            position: fixed;
+            font-size: 2em;
+            z-index: 9999;
+            pointer-events: none;
+            animation: starBurst 1s ease-out forwards;
+        }
+
+        @keyframes starBurst {
+            0% { transform: scale(0) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.5) rotate(180deg); opacity: 1; }
+            100% { transform: scale(0) rotate(360deg); opacity: 0; }
+        }
+
+        /* Coins animation */
+        .coin-anim {
+            position: fixed;
+            font-size: 1.5em;
+            z-index: 9999;
+            pointer-events: none;
+            animation: coinFloat 1s ease-out forwards;
+        }
+
+        @keyframes coinFloat {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-80px) scale(0.5); opacity: 0; }
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 500px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .difficulty-btns {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .diff-btn {
+            flex: 1;
+            min-width: 80px;
+            padding: 12px 15px;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            background: white;
+            font-size: 1em;
+            font-weight: 700;
+            font-family: 'Tajawal', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .diff-btn.active {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, #EDE7F6, #D1C4E9);
+            color: var(--primary);
+        }
+
+        .diff-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    </style>
 </head>
 <body>
+    <!-- Animated Background -->
+    <div class="bubbles" id="bubbles"></div>
 
-<canvas id="confetti-canvas"></canvas>
-
-<div class="app">
-  <!-- HEADER -->
-  <div class="header">
-    <h1>🇫🇷 Quiz Français – Classe 3</h1>
-    <p>Révisions amusantes pour les enfants !</p>
-  </div>
-
-  <!-- START SCREEN -->
-  <div id="start-screen">
-    <div class="big-emoji">🎓</div>
-    <h2>Prêt(e) à jouer ?</h2>
-    <p>Tu vas répondre à <strong id="total-q-count"></strong> questions sur le français.<br>Tu as <strong>15 secondes</strong> par question. Bonne chance ! 🍀</p>
-    <button class="start-btn" onclick="startQuiz()">▶ Commencer le Quiz !</button>
-  </div>
-
-  <!-- QUIZ AREA -->
-  <div id="quiz-area">
-    <!-- Score pills -->
-    <div class="score-pill">
-      <div class="pill correct-pill">✅ <span id="score-correct">0</span> correctes</div>
-      <div class="pill wrong-pill">❌ <span id="score-wrong">0</span> fausses</div>
+    <!-- Feedback Overlay -->
+    <div class="feedback-overlay" id="feedbackOverlay">
+        <div class="feedback-message" id="feedbackMessage"></div>
     </div>
 
-    <!-- Progress -->
-    <div class="progress-wrap">
-      <div class="progress-meta">
-        <span>Question <span id="q-num">1</span> / <span id="q-total"></span></span>
-        <span id="q-category"></span>
-      </div>
-      <div class="progress-bar-bg">
-        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
-      </div>
+    <div class="container">
+        <!-- Welcome / Settings Screen -->
+        <div class="card screen active" id="welcomeScreen">
+            <div class="mascot">🦉</div>
+            <h1 class="welcome-title">مراجعة الاختبار التقييمي</h1>
+            <p class="welcome-subtitle">الصف الثالث - الفصل الأول 🎓</p>
+            <p style="text-align:center; color:#888; margin-bottom:20px; font-size:1.05em;">
+                هيا بنا نراجع دروسنا بطريقة ممتعة! 🎮✨
+            </p>
+
+            <div class="settings-grid">
+                <div class="settings-group">
+                    <label class="settings-label"><span class="emoji">⏱️</span> مؤقت السؤال (ثواني)</label>
+                    <select class="settings-select" id="questionTimer">
+                        <option value="15">15 ثانية</option>
+                        <option value="20" selected>20 ثانية</option>
+                        <option value="30">30 ثانية</option>
+                        <option value="45">45 ثانية</option>
+                        <option value="0">بدون مؤقت</option>
+                    </select>
+                </div>
+
+                <div class="settings-group">
+                    <label class="settings-label"><span class="emoji">📝</span> عدد الأسئلة</label>
+                    <select class="settings-select" id="questionCount">
+                        <option value="5">5 أسئلة</option>
+                        <option value="10" selected>10 أسئلة</option>
+                        <option value="15">15 سؤال</option>
+                        <option value="20">20 سؤال (الكل)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <label class="settings-label"><span class="emoji">🎯</span> مستوى الصعوبة</label>
+                <div class="difficulty-btns">
+                    <button class="diff-btn active" data-level="easy" onclick="setDifficulty('easy', this)">😊 سهل</button>
+                    <button class="diff-btn" data-level="medium" onclick="setDifficulty('medium', this)">🤔 متوسط</button>
+                    <button class="diff-btn" data-level="hard" onclick="setDifficulty('hard', this)">💪 صعب</button>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="startQuiz()">
+                🚀 ابدأ المراجعة!
+            </button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div class="card screen" id="quizScreen">
+            <div class="quiz-header">
+                <div class="score-display">
+                    <div class="score-item">⭐ <span id="starsCount">0</span></div>
+                    <div class="score-item">🪙 <span id="coinsCount">0</span></div>
+                </div>
+                <div class="level-badge">📊 المستوى <span id="levelDisplay">1</span></div>
+            </div>
+
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+            </div>
+
+            <div class="question-number" id="questionNumber"></div>
+
+            <div class="timer-container" id="timerContainer">
+                <div class="timer-circle" id="timerCircle" data-time="20"></div>
+            </div>
+
+            <div class="question-text" id="questionText"></div>
+
+            <div class="options-grid" id="optionsGrid"></div>
+
+            <div class="action-btns">
+                <button class="tts-btn" onclick="readQuestion()">🔊 اقرأ لي السؤال</button>
+                <button class="hint-btn" onclick="showHint()">💡 تلميح</button>
+            </div>
+
+            <div class="hint-text" id="hintText"></div>
+            <div class="fun-fact" id="funFact"></div>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="card screen results-card" id="resultsScreen">
+            <div class="mascot">🏆</div>
+            <h2 style="font-size:1.8em; color:#333; margin-bottom:10px;">أحسنت! انتهت المراجعة 🎉</h2>
+            
+            <div class="results-score" id="finalScore">0%</div>
+            <div class="results-stars" id="finalStars"></div>
+            <div class="results-badge" id="finalBadge"></div>
+
+            <div class="results-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="correctCount">0</div>
+                    <div class="stat-label">✅ صحيحة</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="wrongCount">0</div>
+                    <div class="stat-label">❌ خاطئة</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalCoins">0</div>
+                    <div class="stat-label">🪙 عملات</div>
+                </div>
+            </div>
+
+            <div class="motivational-message" id="motivationalMsg"></div>
+
+            <button class="btn btn-primary" onclick="restartQuiz()">
+                🔄 العب مرة أخرى!
+            </button>
+        </div>
     </div>
 
-    <!-- Timer -->
-    <div class="timer-row">
-      <div class="timer-circle">
-        <svg width="56" height="56" viewBox="0 0 56 56">
-          <circle cx="28" cy="28" r="24" fill="none" stroke="#e0e6ff" stroke-width="5"/>
-          <circle id="timer-ring" cx="28" cy="28" r="24" fill="none" stroke="#764ba2" stroke-width="5"
-            stroke-dasharray="150.8" stroke-dashoffset="0" stroke-linecap="round"
-            style="transition: stroke-dashoffset .95s linear, stroke .5s;"/>
-        </svg>
-        <div class="timer-num" id="timer-num">15</div>
-      </div>
-    </div>
+    <script>
+        // ============ QUESTIONS DATABASE ============
+        const allQuestions = [
+            // Lesson 1: أخبرني عن الإسلام
+            {
+                question: "جلسة الرجل أمام الرسول ﷺ (أسند ركبتيه إلى ركبتيه) تدل على:",
+                options: ["الحرص والاهتمام", "السرعة والاستعجال", "التباعد والفراق", "النوم والكسل"],
+                correct: 0,
+                hint: "فكّر: لماذا يقترب الشخص من المعلم؟ 🤔",
+                funFact: "كان جبريل عليه السلام يأتي النبي ﷺ بصورة رجل ليعلّم الصحابة! 📚",
+                difficulty: "easy",
+                category: "إسلامية"
+            },
+            {
+                question: "جاء ردّ الرسول ﷺ على الرجل مُعلِّماً لـِ:",
+                options: ["المسلمين جميعاً", "السائل وحده", "الصحابة الحاضرين", "أهل المدينة فقط"],
+                correct: 0,
+                hint: "الرسول ﷺ أراد أن يستفيد الجميع من الإجابة 🌍",
+                funFact: "هذا الحديث يُسمى 'حديث جبريل' وهو من أهم الأحاديث في الإسلام! ⭐",
+                difficulty: "easy",
+                category: "إسلامية"
+            },
+            {
+                question: "الركن الأساسي الذي تُبنى عليه جميع أركان الإسلام هو:",
+                options: ["الشهادة", "الصلاة", "الزكاة", "الصوم"],
+                correct: 0,
+                hint: "هو أول ركن من أركان الإسلام الخمسة ☝️",
+                funFact: "أركان الإسلام خمسة: الشهادتان، الصلاة، الزكاة، الصوم، والحج 🕌",
+                difficulty: "easy",
+                category: "إسلامية"
+            },
+            {
+                question: "الركنان اللذان يسقطان عن الفقراء هما:",
+                options: ["الزكاة والحج", "الصلاة والصوم", "الشهادة والصلاة", "الصوم والحج"],
+                correct: 0,
+                hint: "هما الركنان اللذان يحتاجان إلى المال 💰",
+                funFact: "الزكاة تُطهّر المال وتساعد المحتاجين، والحج يحتاج نفقة السفر ✈️",
+                difficulty: "medium",
+                category: "إسلامية"
+            },
+            {
+                question: "ما مرادف كلمة 'أتدري'؟",
+                options: ["أتعلم", "أتجهل", "تهدي", "تنام"],
+                correct: 0,
+                hint: "'أتدري' تعني هل تعرف أو تعلم؟ 🧠",
+                funFact: "اللغة العربية غنية بالمترادفات - كلمات مختلفة بنفس المعنى! 📖",
+                difficulty: "easy",
+                category: "لغة عربية"
+            },
+            {
+                question: "ما ضدّ كلمة 'تُعطي'؟",
+                options: ["تأخذ", "تمنح", "تهب", "تقدّم"],
+                correct: 0,
+                hint: "عكس العطاء هو... 🤲",
+                funFact: "معرفة الأضداد تجعلنا نفهم اللغة العربية بشكل أعمق! 🌟",
+                difficulty: "easy",
+                category: "لغة عربية"
+            },
+            {
+                question: "ضدّ كلمة 'طلع' هو:",
+                options: ["غاب", "ظهر", "أشرق", "سطع"],
+                correct: 0,
+                hint: "ماذا تفعل الشمس عندما تختفي؟ 🌅",
+                funFact: "طلعت الشمس = ظهرت، غابت الشمس = اختفت! ☀️🌙",
+                difficulty: "easy",
+                category: "لغة عربية"
+            },
+            {
+                question: "للزرافة رقبة ............. لتصل إلى الأوراق العالية:",
+                options: ["طويلة", "قوية", "قصيرة", "عريضة"],
+                correct: 0,
+                hint: "الزرافة أطول حيوان على الأرض! 🦒",
+                funFact: "رقبة الزرافة قد يصل طولها إلى مترين! وتستخدمها للوصول لأوراق الأشجار العالية 🌳",
+                difficulty: "easy",
+                category: "بلاغة"
+            },
+            {
+                question: "للدبّ القطبي فرو ............. ليحميه من البرد القارس:",
+                options: ["سميك", "رقيق", "لطيف", "خفيف"],
+                correct: 0,
+                hint: "الدبّ يعيش في مناطق باردة جداً ❄️",
+                funFact: "فرو الدبّ القطبي ليس أبيض فعلاً! شعره شفاف ويبدو أبيض بسبب انعكاس الضوء 🐻‍❄️",
+                difficulty: "easy",
+                category: "بلاغة"
+            },
+            {
+                question: "النحلة حشرة ............. لأنها تصنع العسل:",
+                options: ["مفيدة", "ضارة", "صغيرة", "جميلة"],
+                correct: 0,
+                hint: "العسل فيه شفاء للناس! 🍯",
+                funFact: "النحلة تزور حوالي 2 مليون زهرة لصنع نصف كيلو من العسل! 🐝🌸",
+                difficulty: "easy",
+                category: "بلاغة"
+            },
+            {
+                question: "النمل مجتمع ............. فهو يعمل بجدّ:",
+                options: ["نشيط", "كسول", "متعاون", "هادئ"],
+                correct: 0,
+                hint: "النمل يعمل دائماً ولا يتوقف! 🐜",
+                funFact: "النملة تستطيع حمل أشياء أثقل من وزنها بـ 50 مرة! 💪🐜",
+                difficulty: "easy",
+                category: "بلاغة"
+            },
+            // Lesson 2: حزام الأمان
+            {
+                question: "طلبت الأم من ابنتها سعاد أن:",
+                options: ["تربط حزام الأمان", "تستمع لنصيحتها", "تلتزم السرعة المحددة", "تجلس في المقعد الخلفي"],
+                correct: 0,
+                hint: "ماذا نفعل عندما نركب السيارة؟ 🚗",
+                funFact: "حزام الأمان يقلل خطر الإصابة بنسبة 50% في الحوادث! 🛡️",
+                difficulty: "easy",
+                category: "نصوص"
+            },
+            {
+                question: "حزام الأمان مهم لسلامة:",
+                options: ["قائد السيارة ومن معه جميعاً", "السائق فقط", "الأطفال فقط", "الركاب الخلفيين فقط"],
+                correct: 0,
+                hint: "الجميع يحتاج الحماية! 🤝",
+                funFact: "أصدرت الكويت قوانين مرورية صارمة لحماية الجميع على الطريق 🇰🇼",
+                difficulty: "easy",
+                category: "نصوص"
+            },
+            {
+                question: "الجلوس في المقعد الخلفي دون حزام أمان:",
+                options: ["غير آمن للأطفال", "آمن تماماً", "مريح فقط", "ممنوع للكبار فقط"],
+                correct: 0,
+                hint: "السلامة أولاً في كل مكان بالسيارة! ⚠️",
+                funFact: "المقعد الخلفي مع حزام الأمان هو أكثر مكان أماناً للأطفال في السيارة! 👶🚗",
+                difficulty: "medium",
+                category: "نصوص"
+            },
+            {
+                question: "القيمة المستفادة من درس حزام الأمان هي:",
+                options: ["احترام القانون", "ترشيد الاستهلاك", "الصدق", "التعاون"],
+                correct: 0,
+                hint: "القوانين المرورية موجودة لحمايتنا ⚖️",
+                funFact: "احترام القانون يحمينا ويحمي الآخرين! 🏛️",
+                difficulty: "medium",
+                category: "نصوص"
+            },
+            {
+                question: "ما مرادف كلمة 'مسرورة'؟",
+                options: ["سعيدة", "حزينة", "مضطربة", "خائفة"],
+                correct: 0,
+                hint: "المسرور يكون... فرحاً! 😊",
+                funFact: "في العربية كلمات كثيرة تعبّر عن السعادة: فرح، مسرور، سعيد، مبتهج! 🎉",
+                difficulty: "easy",
+                category: "لغة عربية"
+            },
+            {
+                question: "ما ضدّ كلمة 'أربط'؟",
+                options: ["أفكّ", "أمسح", "أسحب", "أشدّ"],
+                correct: 0,
+                hint: "عكس الربط هو التحرير... 🪢",
+                funFact: "كلمة 'ربط' تأتي من الربط والوصل، وعكسها الفكّ والحلّ! 📝",
+                difficulty: "easy",
+                category: "لغة عربية"
+            },
+            // Grammar: Demonstrative Pronouns
+            {
+                question: "........... الولدان مجتهدان. (اسم الإشارة المناسب)",
+                options: ["هذان", "هذه", "هاتان", "هذا"],
+                correct: 0,
+                hint: "الولدان مثنى مذكر، فما اسم الإشارة المناسب؟ 👦👦",
+                funFact: "أسماء الإشارة: هذا (مفرد مذكر)، هذه (مفرد مؤنث)، هذان (مثنى مذكر)، هاتان (مثنى مؤنث) 📋",
+                difficulty: "medium",
+                category: "نحو"
+            },
+            {
+                question: "........... التلميذتان مهذبتان. (اسم الإشارة المناسب)",
+                options: ["هاتان", "هذان", "هذا", "هذه"],
+                correct: 0,
+                hint: "التلميذتان مثنى مؤنث 👧👧",
+                funFact: "المثنى المؤنث نستخدم معه 'هاتان'، مثل: هاتان الطالبتان 📚",
+                difficulty: "medium",
+                category: "نحو"
+            },
+            {
+                question: "........... السيارات جديدة. (اسم الإشارة المناسب)",
+                options: ["هذه", "هؤلاء", "هاتان", "هذا"],
+                correct: 0,
+                hint: "السيارات جمع غير عاقل 🚗🚗🚗",
+                funFact: "نستخدم 'هذه' مع جمع غير العاقل، مثل: هذه الكتب، هذه الأشجار 🌳📚",
+                difficulty: "medium",
+                category: "نحو"
+            }
+        ];
 
-    <!-- Main question area -->
-    <div class="main">
-      <div class="category-badge" id="cat-badge">Catégorie</div>
-      <div class="question-box">
-        <div class="question-text" id="question-text">Question ici</div>
-      </div>
+        // ============ GAME STATE ============
+        let gameState = {
+            currentQuestion: 0,
+            score: 0,
+            stars: 0,
+            coins: 0,
+            level: 1,
+            correct: 0,
+            wrong: 0,
+            questions: [],
+            timerInterval: null,
+            timeLeft: 0,
+            questionTime: 20,
+            difficulty: 'easy',
+            hintUsed: false,
+            answered: false
+        };
 
-      <div class="options-grid" id="options-grid"></div>
+        // ============ SOUND EFFECTS (Web Audio API) ============
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
 
-      <div class="feedback" id="feedback"></div>
-      <button class="next-btn" id="next-btn" onclick="nextQuestion()">Suivant ➡</button>
-    </div>
-  </div>
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new AudioCtx();
+            }
+        }
 
-  <!-- END SCREEN -->
-  <div id="end-screen">
-    <div class="big-emoji" id="end-emoji">🏆</div>
-    <h2 id="end-title">Bravo !</h2>
-    <div class="stars" id="end-stars"></div>
-    <div class="final-score-num" id="final-score-text"></div>
-    <p id="end-message"></p>
-    <button class="restart-btn" onclick="restartQuiz()">🔄 Rejouer !</button>
-  </div>
-</div>
+        function playSound(type) {
+            initAudio();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
 
-<script>
-/* =====================================================================
-   QUESTIONS — from QCM Classe 3 Revision generale + French revision sheet
-   ===================================================================== */
-const ALL_QUESTIONS = [
+            switch(type) {
+                case 'correct':
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(659, audioCtx.currentTime + 0.1);
+                    osc.frequency.setValueAtTime(784, audioCtx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                    osc.start(audioCtx.currentTime);
+                    osc.stop(audioCtx.currentTime + 0.4);
+                    break;
+                case 'wrong':
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(150, audioCtx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    osc.start(audioCtx.currentTime);
+                    osc.stop(audioCtx.currentTime + 0.3);
+                    break;
+                case 'tick':
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                    osc.start(audioCtx.currentTime);
+                    osc.stop(audioCtx.currentTime + 0.05);
+                    break;
+                case 'celebration':
+                    const notes = [523, 587, 659, 698, 784, 880, 988, 1047];
+                    notes.forEach((freq, i) => {
+                        const o = audioCtx.createOscillator();
+                        const g = audioCtx.createGain();
+                        o.connect(g);
+                        g.connect(audioCtx.destination);
+                        o.type = 'sine';
+                        o.frequency.setValueAtTime(freq, audioCtx.currentTime + i * 0.1);
+                        g.gain.setValueAtTime(0.2, audioCtx.currentTime + i * 0.1);
+                        g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + i * 0.1 + 0.15);
+                        o.start(audioCtx.currentTime + i * 0.1);
+                        o.stop(audioCtx.currentTime + i * 0.1 + 0.15);
+                    });
+                    break;
+                case 'warning':
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                    osc.start(audioCtx.currentTime);
+                    osc.stop(audioCtx.currentTime + 0.1);
+                    break;
+            }
+        }
 
-  /* ══════════════════════════════════════════════════
-     SOURCE 1 : QCM Classe 3 – Révision générale (16-5-2026)
-     SOURCE 2 : French Revision Sheet (AIIS Kuwait)
-     ══════════════════════════════════════════════════ */
+        // ============ CONFETTI ============
+        function createConfetti(count = 50) {
+            const colors = ['#FF6584', '#6C63FF', '#00C853', '#FFD600', '#00B0FF', '#FF9800', '#E91E63'];
+            const shapes = ['■', '●', '▲', '★', '♦'];
+            
+            for (let i = 0; i < count; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.color = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 4000);
+            }
+        }
 
-  /* ── 🗺️ LA FRANCE ── */
-  {
-    category: "🗺️ La France",
-    question: "La capitale de la France est :",
-    options: ["Lyon", "Marseille", "Paris", "Bordeaux"],
-    answer: "Paris",
-    explanation: "Paris est la capitale de la France ! 🗼"
-  },
-  {
-    category: "🗺️ La France",
-    question: "La forme de la carte de France ressemble à :",
-    options: ["un cercle", "un hexagone", "un triangle", "un carré"],
-    answer: "un hexagone",
-    explanation: "La France ressemble à un hexagone — on l'appelle aussi « l'Hexagone » ! 🔷"
-  },
-  {
-    category: "🗺️ La France",
-    question: "La monnaie de la France est :",
-    options: ["le franc", "le dollar", "l'euro", "la livre"],
-    answer: "l'euro",
-    explanation: "La France utilise l'euro (€) depuis 2002 ! 💶"
-  },
-  {
-    category: "🗺️ La France",
-    question: "« Ville Lumière » est le surnom de :",
-    options: ["Lyon", "Marseille", "Paris", "Nice"],
-    answer: "Paris",
-    explanation: "Paris est appelée « Ville Lumière » — la ville de la lumière ! 🌟"
-  },
-  {
-    category: "🗺️ La France",
-    question: "Le Camembert est un type de :",
-    options: ["fromage", "vin", "pain", "fruit"],
-    answer: "fromage",
-    explanation: "Le Camembert est un délicieux fromage français ! 🧀"
-  },
-  {
-    category: "🗺️ La France",
-    question: "Le symbole de la République française est :",
-    options: ["la tour Eiffel", "le coq", "le Louvre", "le fromage"],
-    answer: "le coq",
-    explanation: "Le coq gaulois est le symbole de la République française. 🐓"
-  },
-  {
-    category: "🗺️ La France",
-    question: "La Seine, la Garonne, le Rhône sont des :",
-    options: ["montagnes", "fleuves et rivières", "villes", "monuments"],
-    answer: "fleuves et rivières",
-    explanation: "La Seine, la Garonne et le Rhône sont des fleuves (rivers) ! 🌊"
-  },
-  {
-    category: "🗺️ La France",
-    question: "Les Alpes et les Pyrénées sont des :",
-    options: ["fleuves", "fromages", "montagnes", "pays"],
-    answer: "montagnes",
-    explanation: "Les Alpes et les Pyrénées sont de grandes montagnes de France ! ⛰️"
-  },
-  {
-    category: "🗺️ La France",
-    question: "Le drapeau français est :",
-    options: ["rouge, jaune, vert", "bleu, blanc, rouge", "noir, blanc, rouge", "vert, blanc, orange"],
-    answer: "bleu, blanc, rouge",
-    explanation: "Le drapeau français est bleu 🟦 blanc ⬜ rouge 🟥 — dans cet ordre !"
-  },
-  {
-    category: "🗺️ La France",
-    question: "La tour Eiffel est un ______ célèbre en France.",
-    options: ["musée", "monument", "fromage", "fleuve"],
-    answer: "monument",
-    explanation: "La tour Eiffel est un monument très célèbre de Paris ! 🗼"
-  },
-  {
-    category: "🗺️ La France",
-    question: "L'océan qui entoure la France est :",
-    options: ["l'océan Pacifique", "l'océan Atlantique", "l'océan Indien", "l'océan Arctique"],
-    answer: "l'océan Atlantique",
-    explanation: "La France est bordée par l'océan Atlantique à l'ouest ! 🌊"
-  },
-  {
-    category: "🗺️ La France",
-    question: "La France s'appelle aussi :",
-    options: ["l'Hexagone", "le Musée", "la Ville Lumière", "la Grande Nation"],
-    answer: "l'Hexagone",
-    explanation: "La France est appelée « l'Hexagone » à cause de sa forme à six côtés ! 🔷"
-  },
-  {
-    category: "🗺️ La France",
-    question: "Vrai ou Faux ? Paris est la capitale de la France.",
-    options: ["Vrai ✅", "Faux ❌ c'est Lyon", "Faux ❌ c'est Nice", "Faux ❌ c'est Marseille"],
-    answer: "Vrai ✅",
-    explanation: "VRAI ! Paris est bien la capitale de la France ! 🗼"
-  },
-  {
-    category: "🗺️ La France",
-    question: "Vrai ou Faux ? La France s'appelle aussi l'Hexagone.",
-    options: ["Vrai ✅", "Faux ❌ c'est le Carré", "Faux ❌ c'est le Triangle", "Faux ❌ c'est le Cercle"],
-    answer: "Vrai ✅",
-    explanation: "VRAI ! La France est appelée « l'Hexagone » grâce à sa forme ! 🔷"
-  },
+        // ============ STAR BURST ============
+        function createStarBurst(x, y) {
+            const emojis = ['⭐', '🌟', '✨', '💫'];
+            for (let i = 0; i < 5; i++) {
+                const star = document.createElement('div');
+                star.className = 'star-burst';
+                star.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                star.style.left = (x + (Math.random() - 0.5) * 100) + 'px';
+                star.style.top = (y + (Math.random() - 0.5) * 100) + 'px';
+                document.body.appendChild(star);
+                setTimeout(() => star.remove(), 1000);
+            }
+        }
 
-  /* ── 👋 SALUTATIONS ── */
-  {
-    category: "👋 Salutations",
-    question: "« Bonjour ! » en anglais signifie :",
-    options: ["Good night", "Good bye", "Hello", "Good morning"],
-    answer: "Good morning",
-    explanation: "« Bonjour » = « Good morning » ☀️"
-  },
-  {
-    category: "👋 Salutations",
-    question: "« Salut ! » peut se traduire par :",
-    options: ["Goodbye", "Hello / Hi", "Good night", "How are you?"],
-    answer: "Hello / Hi",
-    explanation: "« Salut » = « Hello » ou « Hi » en anglais ! 😊"
-  },
-  {
-    category: "👋 Salutations",
-    question: "Pour dire « good morning » en français, on dit :",
-    options: ["bonsoir", "bonjour", "bonne nuit", "au revoir"],
-    answer: "bonjour",
-    explanation: "Le matin, on dit « Bonjour ! » ☀️"
-  },
-  {
-    category: "👋 Salutations",
-    question: "Le contraire de « bonjour » est :",
-    options: ["au revoir", "salut", "bonsoir", "merci"],
-    answer: "au revoir",
-    explanation: "On dit « bonjour » pour accueillir et « au revoir » pour partir ! 👋"
-  },
-  {
-    category: "👋 Salutations",
-    question: "« Merci » veut dire en anglais :",
-    options: ["please", "sorry", "thank you", "goodbye"],
-    answer: "thank you",
-    explanation: "« Merci » = « Thank you » 🙏"
-  },
-  {
-    category: "👋 Salutations",
-    question: "« S'il te plaît » veut dire en anglais :",
-    options: ["please", "thank you", "excuse me", "sorry"],
-    answer: "please",
-    explanation: "« S'il te plaît » = « Please » 😊"
-  },
-  {
-    category: "👋 Salutations",
-    question: "« Au revoir » veut dire :",
-    options: ["hello", "goodbye", "good night", "good morning"],
-    answer: "goodbye",
-    explanation: "« Au revoir » = « Goodbye » 👋"
-  },
-  {
-    category: "👋 Salutations",
-    question: "« Bonne nuit » — on le dit :",
-    options: ["le matin", "l'après-midi", "avant de dormir", "le midi"],
-    answer: "avant de dormir",
-    explanation: "On dit « Bonne nuit » juste avant de s'endormir ! 🌙"
-  },
-  {
-    category: "👋 Salutations",
-    question: "En matin (le matin), on dit :",
-    options: ["bonjour", "bonsoir", "au revoir", "bonne nuit"],
-    answer: "bonjour",
-    explanation: "Le matin → « Bonjour ! » ☀️"
-  },
-  {
-    category: "👋 Salutations",
-    question: "En soir (le soir), on dit :",
-    options: ["bonjour", "bonsoir", "au revoir", "bonne nuit"],
-    answer: "bonsoir",
-    explanation: "Le soir → « Bonsoir ! » 🌆"
-  },
-  {
-    category: "👋 Salutations",
-    question: "La nuit (avant de dormir), on dit :",
-    options: ["bonne journée", "bonne soirée", "bonne nuit", "bonjour"],
-    answer: "bonne nuit",
-    explanation: "Avant de dormir → « Bonne nuit ! » 🌙✨"
-  },
-  {
-    category: "👋 Salutations",
-    question: "Le matin, je dis :",
-    options: ["bonsoir", "bonjour", "bonne nuit", "au revoir"],
-    answer: "bonjour",
-    explanation: "Le matin → « Bonjour ! » ☀️"
-  },
-  {
-    category: "👋 Salutations",
-    question: "Le soir, je dis :",
-    options: ["bonjour", "bonsoir", "au revoir", "bonne nuit"],
-    answer: "bonsoir",
-    explanation: "Le soir → « Bonsoir ! » 🌇"
-  },
-  {
-    category: "👋 Salutations",
-    question: "Avant de dormir, je dis :",
-    options: ["bonne journée", "bonne nuit", "bonjour", "bonsoir"],
-    answer: "bonne nuit",
-    explanation: "Avant de dormir → « Bonne nuit ! » 🌙"
-  },
-  {
-    category: "👋 Salutations",
-    question: "Quand je quitte un ami, je dis :",
-    options: ["bonjour", "au revoir", "merci", "salut"],
-    answer: "au revoir",
-    explanation: "Quand on part → « Au revoir ! » 👋"
-  },
-  {
-    category: "👋 Salutations",
-    question: "Pour être poli, je dis :",
-    options: ["merci ou s'il te plaît", "bonsoir ou bonne nuit", "au revoir ou salut", "bonjour ou bonsoir"],
-    answer: "merci ou s'il te plaît",
-    explanation: "Pour être poli → « Merci » ou « S'il te plaît » ! 😊"
-  },
-  {
-    category: "👋 Salutations",
-    question: "Vrai ou Faux ? On dit « bonsoir » le matin.",
-    options: ["Vrai ✅", "Faux ❌ on dit bonjour", "Faux ❌ on dit au revoir", "Faux ❌ on dit merci"],
-    answer: "Faux ❌ on dit bonjour",
-    explanation: "FAUX ! Le matin on dit « Bonjour », pas « Bonsoir ». ☀️"
-  },
-  {
-    category: "👋 Salutations",
-    question: "Vrai ou Faux ? « Salut » est une formule très formelle.",
-    options: ["Vrai ✅", "Faux ❌ c'est informel", "Faux ❌ ça veut dire au revoir", "Faux ❌ ça veut dire merci"],
-    answer: "Faux ❌ c'est informel",
-    explanation: "FAUX ! « Salut » est INFORMEL. Pour être formel, on dit « Bonjour » ou « Bonsoir ». 👔"
-  },
-  {
-    category: "👋 Salutations",
-    question: "Vrai ou Faux ? On dit « bonne journée » le soir.",
-    options: ["Vrai ✅", "Faux ❌ on dit bonsoir", "Faux ❌ on dit bonjour", "Faux ❌ on dit merci"],
-    answer: "Faux ❌ on dit bonsoir",
-    explanation: "FAUX ! Le soir on dit « Bonsoir ». « Bonne journée » s'utilise en journée. 🌇"
-  },
-  {
-    category: "👋 Salutations",
-    question: "Vrai ou Faux ? « Au revoir » veut dire « goodbye ».",
-    options: ["Vrai ✅", "Faux ❌ ça veut dire hello", "Faux ❌ ça veut dire sorry", "Faux ❌ ça veut dire thank you"],
-    answer: "Vrai ✅",
-    explanation: "VRAI ! « Au revoir » = « Goodbye » 👋"
-  },
+        // ============ COIN ANIMATION ============
+        function createCoinAnim(x, y) {
+            const coin = document.createElement('div');
+            coin.className = 'coin-anim';
+            coin.textContent = '🪙 +10';
+            coin.style.left = x + 'px';
+            coin.style.top = y + 'px';
+            document.body.appendChild(coin);
+            setTimeout(() => coin.remove(), 1000);
+        }
 
-  /* ── 💬 DIALOGUES ET PHRASES ── */
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "« Comment allez-vous ? » est une formule :",
-    options: ["informelle", "formelle", "pour dire au revoir", "pour donner son âge"],
-    answer: "formelle",
-    explanation: "« Comment allez-vous ? » est la formule formelle. « Comment ça va ? » est informelle. 👔"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "« Je m'appelle Roger » signifie :",
-    options: ["I am Roger", "My name is Roger", "Roger is here", "Hello Roger"],
-    answer: "My name is Roger",
-    explanation: "« Je m'appelle Roger » = « My name is Roger » 🙋"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "« Quel âge as-tu ? » signifie :",
-    options: ["How are you?", "What is your name?", "How old are you?", "Where do you live?"],
-    answer: "How old are you?",
-    explanation: "« Quel âge as-tu ? » = « How old are you? » 🎂"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "Luc dit : « Bonjour, comment ça va ? » — Mia répond :",
-    options: ["Je m'appelle Mia", "Ça va bien, merci", "J'ai 8 ans", "Au revoir"],
-    answer: "Ça va bien, merci",
-    explanation: "À « Comment ça va ? » on répond « Ça va bien, merci ! » 😄"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "Luc dit : « Comment tu t'appelles ? » — Mia répond :",
-    options: ["Je vais bien", "Je m'appelle Mia", "Au revoir", "J'ai 8 ans"],
-    answer: "Je m'appelle Mia",
-    explanation: "À « Comment tu t'appelles ? » → « Je m'appelle ___ » 🙋"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "Luc dit : « Quel âge as-tu ? » — Mia répond :",
-    options: ["Je m'appelle Mia", "Ça va bien", "J'ai 8 ans", "Au revoir"],
-    answer: "J'ai 8 ans",
-    explanation: "À « Quel âge as-tu ? » → « J'ai ___ ans » 🎂"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "Luc dit : « Au revoir, Mia ! » — Mia répond :",
-    options: ["Bonjour", "Au revoir", "Merci", "J'ai 8 ans"],
-    answer: "Au revoir",
-    explanation: "À « Au revoir ! » → « Au revoir ! » 👋"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "« Comment ça va aujourd'hui ? » — La bonne réponse est :",
-    options: ["Je m'appelle Léa", "J'ai 7 ans", "Ça va très bien", "Au revoir"],
-    answer: "Ça va très bien",
-    explanation: "On répond « Ça va très bien » à « Comment ça va ? » 😊"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "Que dis-tu le matin ?",
-    options: ["Bonsoir", "Bonne nuit", "Bonjour", "Au revoir"],
-    answer: "Bonjour",
-    explanation: "Le matin → « Bonjour ! » ☀️"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "Comment demander le prénom de quelqu'un ?",
-    options: ["Quel âge as-tu ?", "Comment tu t'appelles ?", "Où tu habites ?", "Ça va ?"],
-    answer: "Comment tu t'appelles ?",
-    explanation: "Pour demander le prénom → « Comment tu t'appelles ? » 🙋"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "« Moi, c'est Chloé » signifie :",
-    options: ["Je m'appelle Chloé", "J'ai mal à la tête", "J'habite à Lyon", "Ça va bien"],
-    answer: "Je m'appelle Chloé",
-    explanation: "« Moi, c'est Chloé » = « Je m'appelle Chloé » 😊"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "Bonne réponse à « Quel âge as-tu ? » :",
-    options: ["Je vais bien", "Je m'appelle Inès", "J'ai 8 ans", "J'habite à Paris"],
-    answer: "J'ai 8 ans",
-    explanation: "On répond « J'ai ___ ans » pour donner son âge. 🎂"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "Bonne réponse à « Ça va ? » :",
-    options: ["Je m'appelle Nina", "Oui, ça va bien", "J'ai 9 ans", "Au revoir"],
-    answer: "Oui, ça va bien",
-    explanation: "À « Ça va ? » → « Oui, ça va bien ! » 😄"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "Comment demander où quelqu'un habite ?",
-    options: ["Comment tu t'appelles ?", "Où tu habites ?", "Quel âge as-tu ?", "Ça va ?"],
-    answer: "Où tu habites ?",
-    explanation: "Pour demander où on vit → « Où habites-tu ? » 🏠"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "Bonne réponse à « Où tu habites ? » :",
-    options: ["Je m'appelle Alice", "J'ai 7 ans", "J'habite à Marseille", "Ça va bien"],
-    answer: "J'habite à Marseille",
-    explanation: "On répond « J'habite à ___ » pour indiquer où on vit. 🏠"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "Comment dit-on « goodbye » en français ?",
-    options: ["Bonjour", "Merci", "Au revoir", "Salut"],
-    answer: "Au revoir",
-    explanation: "« Goodbye » = « Au revoir » 👋"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "Quelle question correspond à la réponse : « Je m'appelle Ali » ?",
-    options: ["Quel âge as-tu ?", "Comment tu t'appelles ?", "Comment ça va ?", "Où habites-tu ?"],
-    answer: "Comment tu t'appelles ?",
-    explanation: "Si la réponse est « Je m'appelle Ali », la question est « Comment tu t'appelles ? » 🙋"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "Quelle question correspond à la réponse : « J'ai 8 ans » ?",
-    options: ["Comment ça va ?", "Où habites-tu ?", "Quel âge as-tu ?", "Comment tu t'appelles ?"],
-    answer: "Quel âge as-tu ?",
-    explanation: "Si la réponse est « J'ai 8 ans », la question est « Quel âge as-tu ? » 🎂"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "Quelle question correspond à la réponse : « Je vais bien » ?",
-    options: ["Comment tu t'appelles ?", "Quel âge as-tu ?", "Comment allez-vous ?", "Où habites-tu ?"],
-    answer: "Comment allez-vous ?",
-    explanation: "Si la réponse est « Je vais bien », la question est « Comment allez-vous ? » 😊"
-  },
-  {
-    category: "💬 Dialogues et Phrases",
-    question: "Bonne réponse à « Comment ça va ? » :",
-    options: ["J'ai 7 ans", "Ça va bien, merci", "Je m'appelle Léa", "Au revoir"],
-    answer: "Ça va bien, merci",
-    explanation: "À « Comment ça va ? » → « Ça va bien, merci ! » 😄"
-  },
+        // ============ BACKGROUND BUBBLES ============
+        function createBubbles() {
+            const container = document.getElementById('bubbles');
+            const colors = ['#6C63FF', '#FF6584', '#00C853', '#FFD600', '#00B0FF'];
+            for (let i = 0; i < 15; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                const size = Math.random() * 100 + 50;
+                bubble.style.width = size + 'px';
+                bubble.style.height = size + 'px';
+                bubble.style.left = Math.random() * 100 + '%';
+                bubble.style.background = colors[Math.floor(Math.random() * colors.length)];
+                bubble.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                bubble.style.animationDelay = Math.random() * 10 + 's';
+                container.appendChild(bubble);
+            }
+        }
 
-  /* ── 🔤 TRADUCTIONS ── */
-  {
-    category: "🔤 Traductions",
-    question: "« Bonsoir » en anglais signifie :",
-    options: ["Good morning", "Good evening", "Good night", "Goodbye"],
-    answer: "Good evening",
-    explanation: "« Bonsoir » = « Good evening » 🌇"
-  },
-  {
-    category: "🔤 Traductions",
-    question: "« Bonne nuit » en anglais signifie :",
-    options: ["Good morning", "Good evening", "Good afternoon", "Good night"],
-    answer: "Good night",
-    explanation: "« Bonne nuit » = « Good night » 🌙"
-  },
-  {
-    category: "🔤 Traductions",
-    question: "« Désolé » en anglais signifie :",
-    options: ["please", "sorry", "thank you", "welcome"],
-    answer: "sorry",
-    explanation: "« Désolé » = « Sorry » 😔"
-  },
-  {
-    category: "🔤 Traductions",
-    question: "« Drapeau français » en anglais signifie :",
-    options: ["French cheese", "French bread", "French flag", "French food"],
-    answer: "French flag",
-    explanation: "« Drapeau » = « Flag » — le drapeau français est bleu, blanc, rouge. 🇫🇷"
-  },
-  {
-    category: "🔤 Traductions",
-    question: "« Et toi ? » en anglais signifie :",
-    options: ["And you?", "How old?", "Good morning", "See you!"],
-    answer: "And you?",
-    explanation: "« Et toi ? » = « And you? » 😊"
-  },
-  {
-    category: "🔤 Traductions",
-    question: "« Salut » en anglais signifie :",
-    options: ["Goodbye", "Good morning", "Hello", "Thank you"],
-    answer: "Hello",
-    explanation: "« Salut » = « Hello » 😄"
-  },
-  {
-    category: "🔤 Traductions",
-    question: "« Bonjour » en anglais signifie :",
-    options: ["Good evening", "Good night", "Good morning", "Goodbye"],
-    answer: "Good morning",
-    explanation: "« Bonjour » = « Good morning » ☀️"
-  },
+        // ============ DIFFICULTY ============
+        function setDifficulty(level, btn) {
+            gameState.difficulty = level;
+            document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
 
-  /* ── 🔠 L'INTRUS ── */
-  {
-    category: "🔠 L'Intrus",
-    question: "Quel est l'intrus parmi : lundi, mardi, avion, mercredi ?",
-    options: ["lundi", "mardi", "avion", "mercredi"],
-    answer: "avion",
-    explanation: "« avion » est l'intrus ! Lundi, mardi, mercredi sont des JOURS — avion est un transport. ✈️"
-  },
-  {
-    category: "🔠 L'Intrus",
-    question: "Quel est l'intrus parmi : père, mère, gomme, oncle ?",
-    options: ["père", "mère", "gomme", "oncle"],
-    answer: "gomme",
-    explanation: "« gomme » est l'intrus ! Père, mère, oncle sont de la FAMILLE — une gomme est un objet scolaire. 👨‍👩‍👦"
-  },
-  {
-    category: "🔠 L'Intrus",
-    question: "Quel est l'intrus parmi : rouge, bleu, maison, vert ?",
-    options: ["rouge", "bleu", "maison", "vert"],
-    answer: "maison",
-    explanation: "« maison » est l'intrus ! Rouge, bleu, vert sont des COULEURS — une maison est un bâtiment. 🏠"
-  },
-  {
-    category: "🔠 L'Intrus",
-    question: "Quel est l'intrus parmi : chat, chien, stylo, lapin ?",
-    options: ["chat", "chien", "stylo", "lapin"],
-    answer: "stylo",
-    explanation: "« stylo » est l'intrus ! Chat, chien, lapin sont des ANIMAUX — un stylo est un objet scolaire. 🐾"
-  },
-  {
-    category: "🔠 L'Intrus",
-    question: "Quel est l'intrus parmi : France, Italie, Paris, Espagne ?",
-    options: ["France", "Italie", "Paris", "Espagne"],
-    answer: "Paris",
-    explanation: "« Paris » est l'intrus ! France, Italie, Espagne sont des PAYS — Paris est une VILLE. 🗺️"
-  },
-  {
-    category: "🔠 L'Intrus",
-    question: "Quel est l'intrus parmi : bonjour, bonsoir, merci, salut ?",
-    options: ["bonjour", "bonsoir", "merci", "salut"],
-    answer: "merci",
-    explanation: "« merci » est l'intrus ! Bonjour, bonsoir, salut sont des SALUTATIONS — merci est une politesse. 🙏"
-  },
-  {
-    category: "🔠 L'Intrus",
-    question: "Quel est l'intrus parmi : trois, six, rouge, neuf ?",
-    options: ["trois", "six", "rouge", "neuf"],
-    answer: "rouge",
-    explanation: "« rouge » est l'intrus ! Trois, six, neuf sont des NOMBRES — rouge est une couleur. 🔴"
-  },
+        // ============ SHOW SCREEN ============
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
 
-  /* ── 🔢 LES NOMBRES ── */
-  {
-    category: "🔢 Les Nombres",
-    question: "Comment écrit-on le nombre 5 en français ?",
-    options: ["six", "cinq", "sept", "quatre"],
-    answer: "cinq",
-    explanation: "5 = « cinq » 5️⃣"
-  },
-  {
-    category: "🔢 Les Nombres",
-    question: "Quel nombre est « douze » ?",
-    options: ["12", "20", "2", "22"],
-    answer: "12",
-    explanation: "« Douze » = 12 🔢"
-  },
-  {
-    category: "🔢 Les Nombres",
-    question: "Comment dit-on 17 en français ?",
-    options: ["dix-sept", "dix-neuf", "sept-dix", "dix-huit"],
-    answer: "dix-sept",
-    explanation: "17 = « dix-sept » — dix (10) + sept (7) = 17 ! 🔢"
-  },
-  {
-    category: "🔢 Les Nombres",
-    question: "Quel est le bon mot pour 21 ?",
-    options: ["vingt-deux", "vingt et un", "vingt-un", "vingt et deux"],
-    answer: "vingt et un",
-    explanation: "21 = « vingt et un » — vingt (20) + un (1) = 21 ! 🔢"
-  },
-  {
-    category: "🔢 Les Nombres",
-    question: "« Quinze » correspond à quel nombre ?",
-    options: ["13", "14", "15", "16"],
-    answer: "15",
-    explanation: "« Quinze » = 15 🔢"
-  },
-  {
-    category: "🔢 Les Nombres",
-    question: "Quel nombre vient après « vingt-neuf » ?",
-    options: ["trente", "vingt-huit", "trente et un", "vingt-six"],
-    answer: "trente",
-    explanation: "Après 29 (vingt-neuf) vient 30 = « trente » ! 🔢"
-  },
-  {
-    category: "🔢 Les Nombres",
-    question: "Comment écrit-on 0 en français ?",
-    options: ["un", "zéro", "rien", "deux"],
-    answer: "zéro",
-    explanation: "0 = « zéro » 0️⃣"
-  },
-  {
-    category: "🔢 Les Nombres",
-    question: "« Seize » est égal à :",
-    options: ["16", "17", "6", "26"],
-    answer: "16",
-    explanation: "« Seize » = 16 🔢"
-  },
-  {
-    category: "🔢 Les Nombres",
-    question: "Quel est le bon mot pour 28 ?",
-    options: ["vingt-sept", "vingt-huit", "vingt-neuf", "vingt-six"],
-    answer: "vingt-huit",
-    explanation: "28 = « vingt-huit » — vingt (20) + huit (8) = 28 ! 🔢"
-  },
-  {
-    category: "🔢 Les Nombres",
-    question: "« Dix » + « huit » donne :",
-    options: ["dix-huit", "dix-sept", "dix-neuf", "onze"],
-    answer: "dix-huit",
-    explanation: "10 + 8 = 18 = « dix-huit » ! 🔢"
-  },
+        // ============ START QUIZ ============
+        function startQuiz() {
+            initAudio();
+            const questionTime = parseInt(document.getElementById('questionTimer').value);
+            const questionCount = parseInt(document.getElementById('questionCount').value);
 
-  /* ── ➕ CALCUL EN FRANÇAIS ── */
-  {
-    category: "➕ Calcul en Français",
-    question: "3 + 3 = ? (en français)",
-    options: ["sept", "six", "deux", "cinq"],
-    answer: "six",
-    explanation: "3 + 3 = 6 = « six » 6️⃣"
-  },
-  {
-    category: "➕ Calcul en Français",
-    question: "7 + 5 = ? (en français)",
-    options: ["douze", "quatorze", "seize", "onze"],
-    answer: "douze",
-    explanation: "7 + 5 = 12 = « douze » 🔢"
-  },
-  {
-    category: "➕ Calcul en Français",
-    question: "4 – 2 = ? (en français)",
-    options: ["sept", "six", "deux", "trois"],
-    answer: "deux",
-    explanation: "4 – 2 = 2 = « deux » 2️⃣"
-  },
-  {
-    category: "➕ Calcul en Français",
-    question: "20 – 6 = ? (en français)",
-    options: ["douze", "quatorze", "seize", "quinze"],
-    answer: "quatorze",
-    explanation: "20 – 6 = 14 = « quatorze » 🔢"
-  },
-  {
-    category: "➕ Calcul en Français",
-    question: "5 + 1 = ? (en français)",
-    options: ["sept", "six", "deux", "huit"],
-    answer: "six",
-    explanation: "5 + 1 = 6 = « six » 6️⃣"
-  },
-  {
-    category: "➕ Calcul en Français",
-    question: "8 + 8 = ? (en français)",
-    options: ["douze", "quatorze", "seize", "dix-huit"],
-    answer: "seize",
-    explanation: "8 + 8 = 16 = « seize » 🔢"
-  },
+            // Filter questions by difficulty
+            let filtered = allQuestions;
+            if (gameState.difficulty === 'easy') {
+                filtered = allQuestions.filter(q => q.difficulty === 'easy');
+            } else if (gameState.difficulty === 'medium') {
+                filtered = allQuestions.filter(q => q.difficulty === 'easy' || q.difficulty === 'medium');
+            }
+            // Hard = all questions
 
-  /* ── ✏️ VERBE ÊTRE ou AVOIR ── */
-  {
-    category: "✏️ Être ou Avoir",
-    question: "Je _____ un frère.",
-    options: ["suis", "ai", "est", "avons"],
-    answer: "ai",
-    explanation: "« J'ai un frère » — AVOIR : j'ai, tu as, il/elle a... 📚"
-  },
-  {
-    category: "✏️ Être ou Avoir",
-    question: "Tu _____ gentil.",
-    options: ["as", "es", "ont", "sommes"],
-    answer: "es",
-    explanation: "« Tu es gentil » — ÊTRE : je suis, tu es, il est... 📚"
-  },
-  {
-    category: "✏️ Être ou Avoir",
-    question: "Elle _____ une petite sœur.",
-    options: ["a", "est", "suis", "avons"],
-    answer: "a",
-    explanation: "« Elle a une petite sœur » — AVOIR : elle a... 📚"
-  },
-  {
-    category: "✏️ Être ou Avoir",
-    question: "Il _____ fatigué.",
-    options: ["as", "ai", "est", "sont"],
-    answer: "est",
-    explanation: "« Il est fatigué » — ÊTRE : il est... 📚"
-  },
-  {
-    category: "✏️ Être ou Avoir",
-    question: "Nous _____ deux chiens.",
-    options: ["sommes", "avons", "sont", "êtes"],
-    answer: "avons",
-    explanation: "« Nous avons deux chiens » — AVOIR : nous avons... 📚"
-  },
-  {
-    category: "✏️ Être ou Avoir",
-    question: "Vous _____ à l'école.",
-    options: ["avez", "êtes", "ont", "sommes"],
-    answer: "êtes",
-    explanation: "« Vous êtes à l'école » — ÊTRE : vous êtes... 📚"
-  },
-  {
-    category: "✏️ Être ou Avoir",
-    question: "Ils _____ des copains.",
-    options: ["sont", "avons", "ont", "avez"],
-    answer: "ont",
-    explanation: "« Ils ont des copains » — AVOIR : ils ont... 📚"
-  },
-  {
-    category: "✏️ Être ou Avoir",
-    question: "Elles _____ contentes.",
-    options: ["ont", "sommes", "sont", "avez"],
-    answer: "sont",
-    explanation: "« Elles sont contentes » — ÊTRE : elles sont... 📚"
-  },
-  {
-    category: "✏️ Être ou Avoir",
-    question: "Je _____ en France.",
-    options: ["ai", "suis", "est", "avons"],
-    answer: "suis",
-    explanation: "« Je suis en France » — ÊTRE : je suis... 📚"
-  },
-  {
-    category: "✏️ Être ou Avoir",
-    question: "Tu _____ 8 ans.",
-    options: ["es", "as", "a", "avons"],
-    answer: "as",
-    explanation: "« Tu as 8 ans » — AVOIR : tu as... 📚"
-  },
-  {
-    category: "✏️ Être ou Avoir",
-    question: "Je _____ fatigué.",
-    options: ["ai", "suis", "est", "sommes"],
-    answer: "suis",
-    explanation: "« Je suis fatigué » — ÊTRE : je suis... 📚"
-  },
-  {
-    category: "✏️ Être ou Avoir",
-    question: "J'_____ un chien.",
-    options: ["suis", "ai", "est", "avons"],
-    answer: "ai",
-    explanation: "« J'ai un chien » — AVOIR : j'ai... 📚"
-  },
-  {
-    category: "✏️ Être ou Avoir",
-    question: "Nous _____ en vacances.",
-    options: ["avons", "sommes", "sont", "êtes"],
-    answer: "sommes",
-    explanation: "« Nous sommes en vacances » — ÊTRE : nous sommes... 📚"
-  },
-  {
-    category: "✏️ Être ou Avoir",
-    question: "Il _____ faim.",
-    options: ["a", "est", "as", "ont"],
-    answer: "a",
-    explanation: "« Il a faim » — AVOIR : il a... 📚"
-  },
-  {
-    category: "✏️ Être ou Avoir",
-    question: "J'_____ mal au ventre.",
-    options: ["suis", "est", "ai", "avons"],
-    answer: "ai",
-    explanation: "« J'ai mal au ventre » — AVOIR : j'ai... 📚"
-  }
-];
+            // If not enough filtered, use all
+            if (filtered.length < questionCount) {
+                filtered = allQuestions;
+            }
 
-/* =====================================================================
-   GAME STATE
-   ===================================================================== */
-let questions = [];
-let currentIndex = 0;
-let score = 0;
-let wrongCount = 0;
-let answered = false;
-let timerInterval = null;
-let timeLeft = 15;
-const TIMER_SECS = 15;
-const CIRCUMFERENCE = 2 * Math.PI * 24; // r=24
+            // Shuffle and pick
+            const shuffled = [...filtered].sort(() => Math.random() - 0.5);
+            gameState.questions = shuffled.slice(0, Math.min(questionCount, shuffled.length));
+            gameState.questionTime = questionTime;
+            gameState.currentQuestion = 0;
+            gameState.score = 0;
+            gameState.stars = 0;
+            gameState.coins = 0;
+            gameState.level = 1;
+            gameState.correct = 0;
+            gameState.wrong = 0;
 
-/* =====================================================================
-   AUDIO (Web Audio API — no library needed)
-   ===================================================================== */
-let audioCtx = null;
-function getAudioCtx() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  return audioCtx;
-}
-function playTone(freq, type, duration, gainVal = 0.3) {
-  try {
-    const ctx = getAudioCtx();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.frequency.value = freq;
-    osc.type = type;
-    gain.gain.setValueAtTime(gainVal, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + duration);
-  } catch(e) {}
-}
-function playCorrectSound() {
-  playTone(523, 'sine', 0.15);
-  setTimeout(() => playTone(659, 'sine', 0.15), 120);
-  setTimeout(() => playTone(784, 'sine', 0.25), 240);
-}
-function playWrongSound() {
-  playTone(220, 'sawtooth', 0.15, 0.2);
-  setTimeout(() => playTone(180, 'sawtooth', 0.2, 0.2), 150);
-}
-function playTickSound() {
-  playTone(880, 'sine', 0.05, 0.05);
-}
+            showScreen('quizScreen');
+            loadQuestion();
+        }
 
-/* =====================================================================
-   CONFETTI
-   ===================================================================== */
-function launchConfetti() {
-  const canvas = document.getElementById('confetti-canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  const colors = ['#667eea','#764ba2','#ffdc00','#ff851b','#2ecc40','#ff4136','#f012be'];
-  const pieces = Array.from({length: 160}, () => ({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height - canvas.height,
-    w: Math.random() * 10 + 6,
-    h: Math.random() * 6 + 4,
-    color: colors[Math.floor(Math.random() * colors.length)],
-    speed: Math.random() * 4 + 2,
-    angle: Math.random() * 360,
-    spin: (Math.random() - 0.5) * 6
-  }));
-  let frame = 0;
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    pieces.forEach(p => {
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate((p.angle * Math.PI) / 180);
-      ctx.fillStyle = p.color;
-      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-      ctx.restore();
-      p.y += p.speed;
-      p.angle += p.spin;
-      if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
-    });
-    frame++;
-    if (frame < 180) requestAnimationFrame(draw);
-    else ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
-  draw();
-}
+        // ============ LOAD QUESTION ============
+        function loadQuestion() {
+            if (gameState.currentQuestion >= gameState.questions.length) {
+                showResults();
+                return;
+            }
 
-/* =====================================================================
-   SHUFFLE
-   ===================================================================== */
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+            gameState.answered = false;
+            gameState.hintUsed = false;
+            const q = gameState.questions[gameState.currentQuestion];
+            const total = gameState.questions.length;
+            const current = gameState.currentQuestion + 1;
 
-/* =====================================================================
-   INIT
-   ===================================================================== */
-document.getElementById('total-q-count').textContent = ALL_QUESTIONS.length;
+            // Update UI
+            document.getElementById('questionNumber').textContent = `السؤال ${current} من ${total}`;
+            document.getElementById('progressBar').style.width = ((current - 1) / total * 100) + '%';
+            document.getElementById('questionText').textContent = q.question;
+            document.getElementById('starsCount').textContent = gameState.stars;
+            document.getElementById('coinsCount').textContent = gameState.coins;
+            document.getElementById('levelDisplay').textContent = gameState.level;
+            document.getElementById('hintText').classList.remove('show');
+            document.getElementById('hintText').textContent = '';
+            document.getElementById('funFact').classList.remove('show');
 
-function startQuiz() {
-  questions = shuffle(ALL_QUESTIONS);
-  currentIndex = 0;
-  score = 0;
-  wrongCount = 0;
-  document.getElementById('score-correct').textContent = 0;
-  document.getElementById('score-wrong').textContent = 0;
-  document.getElementById('q-total').textContent = questions.length;
+            // Shuffle options
+            const optionIndices = [0, 1, 2, 3];
+            for (let i = optionIndices.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [optionIndices[i], optionIndices[j]] = [optionIndices[j], optionIndices[i]];
+            }
 
-  document.getElementById('start-screen').style.display = 'none';
-  document.getElementById('end-screen').style.display = 'none';
-  document.getElementById('quiz-area').style.display = 'block';
+            const grid = document.getElementById('optionsGrid');
+            grid.innerHTML = '';
 
-  loadQuestion();
-}
+            const optionEmojis = ['🔵', '🟢', '🟡', '🟣'];
+            optionIndices.forEach((optIdx, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = `${optionEmojis[i]} ${q.options[optIdx]}`;
+                btn.dataset.index = optIdx;
+                btn.onclick = function(e) { selectAnswer(optIdx, this, e); };
+                grid.appendChild(btn);
+            });
 
-/* =====================================================================
-   LOAD QUESTION
-   ===================================================================== */
-function loadQuestion() {
-  answered = false;
-  const q = questions[currentIndex];
+            // Start timer
+            startTimer();
+        }
 
-  // Progress
-  document.getElementById('q-num').textContent = currentIndex + 1;
-  const pct = (currentIndex / questions.length) * 100;
-  document.getElementById('progress-fill').style.width = pct + '%';
+        // ============ TIMER ============
+        function startTimer() {
+            clearInterval(gameState.timerInterval);
+            const timerContainer = document.getElementById('timerContainer');
+            const timerCircle = document.getElementById('timerCircle');
 
-  // Category
-  document.getElementById('cat-badge').textContent = q.category;
-  document.getElementById('q-category').textContent = q.category;
+            if (gameState.questionTime === 0) {
+                timerContainer.style.display = 'none';
+                return;
+            }
 
-  // Question text
-  document.getElementById('question-text').textContent = q.question;
+            timerContainer.style.display = 'flex';
+            gameState.timeLeft = gameState.questionTime;
+            timerCircle.setAttribute('data-time', gameState.timeLeft);
+            timerCircle.style.setProperty('--timer-progress', '100%');
+            timerCircle.classList.remove('timer-warning');
 
-  // Options
-  const grid = document.getElementById('options-grid');
-  grid.innerHTML = '';
-  const labels = ['A', 'B', 'C', 'D'];
-  // Shuffle options display order
-  const idxOrder = shuffle([0,1,2,3]);
-  idxOrder.forEach((optIdx, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'option-btn';
-    btn.setAttribute('data-label', labels[i]);
-    btn.setAttribute('data-value', q.options[optIdx]);
-    btn.textContent = q.options[optIdx];
-    btn.onclick = () => selectAnswer(btn, q);
-    grid.appendChild(btn);
-  });
+            gameState.timerInterval = setInterval(() => {
+                gameState.timeLeft--;
+                timerCircle.setAttribute('data-time', gameState.timeLeft);
+                const progress = (gameState.timeLeft / gameState.questionTime) * 100;
+                timerCircle.style.setProperty('--timer-progress', progress + '%');
 
-  // Feedback hidden
-  const fb = document.getElementById('feedback');
-  fb.className = 'feedback';
-  fb.textContent = '';
+                if (gameState.timeLeft <= 5 && gameState.timeLeft > 0) {
+                    timerCircle.classList.add('timer-warning');
+                    playSound('warning');
+                }
 
-  // Next btn hidden
-  document.getElementById('next-btn').classList.remove('visible');
+                if (gameState.timeLeft <= 0) {
+                    clearInterval(gameState.timerInterval);
+                    if (!gameState.answered) {
+                        timeUp();
+                    }
+                }
+            }, 1000);
+        }
 
-  // Start timer
-  startTimer();
-}
+        function timeUp() {
+            gameState.answered = true;
+            gameState.wrong++;
+            
+            // Highlight correct answer
+            const q = gameState.questions[gameState.currentQuestion];
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.classList.add('disabled');
+                if (parseInt(btn.dataset.index) === q.correct) {
+                    btn.classList.add('correct');
+                }
+            });
 
-/* =====================================================================
-   TIMER
-   ===================================================================== */
-function startTimer() {
-  clearInterval(timerInterval);
-  timeLeft = TIMER_SECS;
-  updateTimerUI();
+            showFeedback('⏰ انتهى الوقت!', '#FF9800');
+            playSound('wrong');
 
-  timerInterval = setInterval(() => {
-    timeLeft--;
-    updateTimerUI();
-    if (timeLeft <= 5 && timeLeft > 0) playTickSound();
-    if (timeLeft <= 0) {
-      clearInterval(timerInterval);
-      handleTimeout();
-    }
-  }, 1000);
-}
+            setTimeout(() => {
+                gameState.currentQuestion++;
+                loadQuestion();
+            }, 2000);
+        }
 
-function updateTimerUI() {
-  const numEl = document.getElementById('timer-num');
-  const ring  = document.getElementById('timer-ring');
-  numEl.textContent = timeLeft;
-  const offset = CIRCUMFERENCE * (1 - timeLeft / TIMER_SECS);
-  ring.style.strokeDashoffset = offset;
+        // ============ SELECT ANSWER ============
+        function selectAnswer(selectedIdx, btn, event) {
+            if (gameState.answered) return;
+            gameState.answered = true;
+            clearInterval(gameState.timerInterval);
 
-  if (timeLeft <= 5) {
-    numEl.classList.add('timer-urgent');
-    ring.style.stroke = '#ff4136';
-  } else {
-    numEl.classList.remove('timer-urgent');
-    ring.style.stroke = '#764ba2';
-  }
-}
+            const q = gameState.questions[gameState.currentQuestion];
+            const isCorrect = selectedIdx === q.correct;
 
-function handleTimeout() {
-  if (answered) return;
-  answered = true;
-  playWrongSound();
-  wrongCount++;
-  document.getElementById('score-wrong').textContent = wrongCount;
+            // Disable all buttons
+            document.querySelectorAll('.option-btn').forEach(b => b.classList.add('disabled'));
 
-  // Highlight correct answer
-  const q = questions[currentIndex];
-  document.querySelectorAll('.option-btn').forEach(btn => {
-    btn.disabled = true;
-    if (btn.getAttribute('data-value') === q.answer) btn.classList.add('correct');
-  });
+            if (isCorrect) {
+                btn.classList.add('correct');
+                gameState.correct++;
+                gameState.stars++;
+                gameState.coins += gameState.hintUsed ? 5 : 10;
+                
+                // Level up every 3 correct
+                if (gameState.correct % 3 === 0) {
+                    gameState.level++;
+                }
 
-  showFeedback(false, `⏰ Temps écoulé ! La bonne réponse était : « ${q.answer} » — ${q.explanation}`);
-  document.getElementById('next-btn').classList.add('visible');
-}
+                playSound('correct');
+                createConfetti(20);
+                createStarBurst(event.clientX, event.clientY);
+                createCoinAnim(event.clientX, event.clientY - 50);
 
-/* =====================================================================
-   SELECT ANSWER
-   ===================================================================== */
-function selectAnswer(btn, q) {
-  if (answered) return;
-  answered = true;
-  clearInterval(timerInterval);
+                const messages = ['أحسنت! 🌟', 'ممتاز! 🎉', 'رائع! 🏆', 'عبقري! 🧠', 'مذهل! ✨', 'بطل! 💪'];
+                showFeedback(messages[Math.floor(Math.random() * messages.length)], '#00C853');
+            } else {
+                btn.classList.add('wrong');
+                gameState.wrong++;
+                
+                // Show correct answer
+                document.querySelectorAll('.option-btn').forEach(b => {
+                    if (parseInt(b.dataset.index) === q.correct) {
+                        b.classList.add('correct');
+                    }
+                });
 
-  const selected = btn.getAttribute('data-value');
-  const correct  = selected === q.answer;
+                playSound('wrong');
+                const messages = ['لا بأس! حاول مرة أخرى 💪', 'قريب! المرة القادمة إن شاء الله 🌈', 'لا تقلق! أنت تتعلم 📚'];
+                showFeedback(messages[Math.floor(Math.random() * messages.length)], '#FF6584');
+            }
 
-  // Disable all buttons and mark
-  document.querySelectorAll('.option-btn').forEach(b => {
-    b.disabled = true;
-    if (b.getAttribute('data-value') === q.answer) b.classList.add('correct');
-  });
-  if (!correct) btn.classList.add('wrong');
+            // Show fun fact
+            const funFactEl = document.getElementById('funFact');
+            funFactEl.textContent = '💡 ' + q.funFact;
+            funFactEl.classList.add('show');
 
-  if (correct) {
-    score++;
-    document.getElementById('score-correct').textContent = score;
-    playCorrectSound();
-    showFeedback(true, `🎉 Bravo ! ${q.explanation}`);
-  } else {
-    wrongCount++;
-    document.getElementById('score-wrong').textContent = wrongCount;
-    playWrongSound();
-    showFeedback(false, `😔 Pas tout à fait ! La bonne réponse est « ${q.answer} ». ${q.explanation}`);
-  }
+            // Update score display
+            document.getElementById('starsCount').textContent = gameState.stars;
+            document.getElementById('coinsCount').textContent = gameState.coins;
+            document.getElementById('levelDisplay').textContent = gameState.level;
 
-  document.getElementById('next-btn').classList.add('visible');
-}
+            // Next question after delay
+            setTimeout(() => {
+                gameState.currentQuestion++;
+                loadQuestion();
+            }, 2500);
+        }
 
-/* =====================================================================
-   FEEDBACK
-   ===================================================================== */
-function showFeedback(correct, text) {
-  const fb = document.getElementById('feedback');
-  fb.textContent = text;
-  fb.className = 'feedback show ' + (correct ? 'correct-fb' : 'wrong-fb');
-}
+        // ============ FEEDBACK ============
+        function showFeedback(message, color) {
+            const overlay = document.getElementById('feedbackOverlay');
+            const msgEl = document.getElementById('feedbackMessage');
+            msgEl.textContent = message;
+            msgEl.style.color = color;
+            overlay.classList.add('show');
+            setTimeout(() => overlay.classList.remove('show'), 1500);
+        }
 
-/* =====================================================================
-   NEXT
-   ===================================================================== */
-function nextQuestion() {
-  currentIndex++;
-  if (currentIndex >= questions.length) {
-    showEndScreen();
-  } else {
-    loadQuestion();
-  }
-}
+        // ============ HINT ============
+        function showHint() {
+            if (gameState.answered) return;
+            gameState.hintUsed = true;
+            const q = gameState.questions[gameState.currentQuestion];
+            const hintEl = document.getElementById('hintText');
+            hintEl.textContent = '💡 ' + q.hint;
+            hintEl.classList.add('show');
+        }
 
-/* =====================================================================
-   END SCREEN
-   ===================================================================== */
-function showEndScreen() {
-  clearInterval(timerInterval);
-  document.getElementById('quiz-area').style.display = 'none';
-  const endEl = document.getElementById('end-screen');
-  endEl.style.display = 'block';
+        // ============ TEXT-TO-SPEECH ============
+        function readQuestion() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const q = gameState.questions[gameState.currentQuestion];
+                const utterance = new SpeechSynthesisUtterance(q.question);
+                utterance.lang = 'ar-SA';
+                utterance.rate = 0.8;
+                utterance.pitch = 1.1;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
 
-  const total = questions.length;
-  const pct   = score / total;
+        // ============ RESULTS ============
+        function showResults() {
+            clearInterval(gameState.timerInterval);
+            playSound('celebration');
+            createConfetti(100);
 
-  // Stars
-  let stars = '';
-  if (pct >= 0.9)      stars = '⭐⭐⭐⭐⭐';
-  else if (pct >= 0.7) stars = '⭐⭐⭐⭐';
-  else if (pct >= 0.5) stars = '⭐⭐⭐';
-  else if (pct >= 0.3) stars = '⭐⭐';
-  else                 stars = '⭐';
+            const total = gameState.questions.length;
+            const percentage = Math.round((gameState.correct / total) * 100);
 
-  // Emoji + title + message
-  let emoji, title, msg;
-  if (pct >= 0.9) {
-    emoji = '🏆'; title = 'Incroyable !';
-    msg = `Tu es une vraie star du français ! ${score} bonnes réponses sur ${total}. Félicitations ! 🥳`;
-    launchConfetti();
-  } else if (pct >= 0.7) {
-    emoji = '🌟'; title = 'Excellent !';
-    msg = `Très bien joué ! ${score} bonnes réponses sur ${total}. Continue comme ça ! 😊`;
-    launchConfetti();
-  } else if (pct >= 0.5) {
-    emoji = '👍'; title = 'Bien joué !';
-    msg = `${score} bonnes réponses sur ${total}. Tu progresses ! Entraîne-toi encore un peu. 💪`;
-  } else if (pct >= 0.3) {
-    emoji = '📚'; title = 'Continue d\'apprendre !';
-    msg = `${score} bonnes réponses sur ${total}. Relis tes notes et réessaie — tu peux le faire ! 📖`;
-  } else {
-    emoji = '💪'; title = 'Courage !';
-    msg = `${score} bonnes réponses sur ${total}. Ne t'inquiète pas — avec de la pratique, tu vas t'améliorer ! 🌈`;
-  }
+            document.getElementById('finalScore').textContent = percentage + '%';
+            document.getElementById('correctCount').textContent = gameState.correct;
+            document.getElementById('wrongCount').textContent = gameState.wrong;
+            document.getElementById('totalCoins').textContent = gameState.coins;
 
-  document.getElementById('end-emoji').textContent = emoji;
-  document.getElementById('end-title').textContent = title;
-  document.getElementById('end-stars').textContent = stars;
-  document.getElementById('final-score-text').textContent = `${score} / ${total}`;
-  document.getElementById('end-message').textContent = msg;
-}
+            // Stars display
+            let starsHTML = '';
+            const starCount = Math.ceil((percentage / 100) * 5);
+            for (let i = 0; i < 5; i++) {
+                starsHTML += i < starCount ? '⭐' : '☆';
+            }
+            document.getElementById('finalStars').textContent = starsHTML;
 
-/* =====================================================================
-   RESTART
-   ===================================================================== */
-function restartQuiz() {
-  document.getElementById('end-screen').style.display = 'none';
-  document.getElementById('start-screen').style.display = 'block';
-}
-</script>
+            // Badge
+            let badge = '';
+            if (percentage >= 90) badge = '🏆 بطل المراجعة!';
+            else if (percentage >= 70) badge = '🥇 ممتاز!';
+            else if (percentage >= 50) badge = '🥈 جيد جداً!';
+            else if (percentage >= 30) badge = '🥉 جيد - واصل التعلم!';
+            else badge = '📚 تحتاج مراجعة أكثر!';
+            document.getElementById('finalBadge').textContent = badge;
+
+            // Motivational message
+            let msg = '';
+            if (percentage >= 90) msg = '🌟 ما شاء الله! أنت نجم لامع! استمر في التفوق والاجتهاد! 🚀';
+            else if (percentage >= 70) msg = '💪 أداء رائع! أنت قريب جداً من الامتياز! واصل المذاكرة! 📖';
+            else if (percentage >= 50) msg = '🌈 عمل جيد! مع مزيد من المراجعة ستصل للقمة! 🎯';
+            else msg = '📚 لا تقلق! كل محاولة تجعلك أقوى! راجع الدرس وحاول مرة أخرى! 💪';
+            document.getElementById('motivationalMsg').textContent = msg;
+
+            showScreen('resultsScreen');
+
+            // Celebration confetti waves
+            setTimeout(() => createConfetti(50), 1000);
+            setTimeout(() => createConfetti(30), 2000);
+        }
+
+        // ============ RESTART ============
+        function restartQuiz() {
+            showScreen('welcomeScreen');
+        }
+
+        // ============ INIT ============
+        createBubbles();
+    </script>
 </body>
 </html>
